@@ -37,5 +37,5 @@ Sistemos sudedamosios dalys:
 ![image](https://github.com/DeividasDavidavicius/CafeGame/assets/101116531/c2862b04-d354-4fd7-859b-46646f385480)
 
 <p align="center">
-2.1 pav. Sistemos FlavorFare diegimo diagrama
+2.1 pav. Sistemos CafeGame diegimo diagrama
 </p>
