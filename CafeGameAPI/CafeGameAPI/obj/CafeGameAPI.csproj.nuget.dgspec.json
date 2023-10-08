@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\ITWORK\\source\\repos\\CafeGameAPI\\CafeGameAPI\\CafeGameAPI.csproj": {}
+    "C:\\Users\\ITWORK\\Documents\\GitHub\\CafeGame\\CafeGameAPI\\CafeGameAPI\\CafeGameAPI.csproj": {}
   },
   "projects": {
-    "C:\\Users\\ITWORK\\source\\repos\\CafeGameAPI\\CafeGameAPI\\CafeGameAPI.csproj": {
+    "C:\\Users\\ITWORK\\Documents\\GitHub\\CafeGame\\CafeGameAPI\\CafeGameAPI\\CafeGameAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\ITWORK\\source\\repos\\CafeGameAPI\\CafeGameAPI\\CafeGameAPI.csproj",
+        "projectUniqueName": "C:\\Users\\ITWORK\\Documents\\GitHub\\CafeGame\\CafeGameAPI\\CafeGameAPI\\CafeGameAPI.csproj",
         "projectName": "CafeGameAPI",
-        "projectPath": "C:\\Users\\ITWORK\\source\\repos\\CafeGameAPI\\CafeGameAPI\\CafeGameAPI.csproj",
+        "projectPath": "C:\\Users\\ITWORK\\Documents\\GitHub\\CafeGame\\CafeGameAPI\\CafeGameAPI\\CafeGameAPI.csproj",
         "packagesPath": "C:\\Users\\ITWORK\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\ITWORK\\source\\repos\\CafeGameAPI\\CafeGameAPI\\obj\\",
+        "outputPath": "C:\\Users\\ITWORK\\Documents\\GitHub\\CafeGame\\CafeGameAPI\\CafeGameAPI\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -61,8 +61,7 @@
             "net47",
             "net471",
             "net472",
-            "net48",
-            "net481"
+            "net48"
           ],
           "assetTargetFallback": true,
           "warn": true,
@@ -74,7 +73,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.401\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.202\\RuntimeIdentifierGraph.json"
         }
       }
     }
