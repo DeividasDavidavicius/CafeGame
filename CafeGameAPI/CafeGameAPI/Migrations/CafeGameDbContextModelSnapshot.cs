@@ -57,7 +57,7 @@ namespace CafeGameAPI.Migrations
 
                     b.HasIndex("InternetCafeId");
 
-                    b.ToTable("Computers");
+                    b.ToTable("Computers", (string)null);
                 });
 
             modelBuilder.Entity("CafeGameAPI.Data.Entities.InternetCafe", b =>
@@ -78,7 +78,7 @@ namespace CafeGameAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("InternetCafes");
+                    b.ToTable("InternetCafes", (string)null);
                 });
 
             modelBuilder.Entity("CafeGameAPI.Data.Entities.Reservation", b =>
@@ -106,7 +106,7 @@ namespace CafeGameAPI.Migrations
 
                     b.HasIndex("ComputerId");
 
-                    b.ToTable("Reservations");
+                    b.ToTable("Reservations", (string)null);
                 });
 
             modelBuilder.Entity("CafeGameAPI.Data.Entities.Computer", b =>

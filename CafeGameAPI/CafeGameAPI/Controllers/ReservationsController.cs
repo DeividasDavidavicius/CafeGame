@@ -34,7 +34,7 @@ namespace CafeGameAPI.Controllers
 
             if (computer == null)
             {
-                return NotFound();
+                return UnprocessableEntity();
             }
 
             if(createReservationDto.Start >= createReservationDto.End)
@@ -115,7 +115,7 @@ namespace CafeGameAPI.Controllers
             return Ok(reservations.Select(reservation => new ReservationDto(reservation.Id, reservation.Name, reservation.Start, reservation.End)));
         }
         
-        [HttpPut]
+        [HttpPatch]
         [Route("{reservationId}")]
         public async Task<ActionResult<ReservationDto>> Update(int internetCafeId, int computerId, int reservationId, UpdateReservationDto updateReservationDto)
         {
