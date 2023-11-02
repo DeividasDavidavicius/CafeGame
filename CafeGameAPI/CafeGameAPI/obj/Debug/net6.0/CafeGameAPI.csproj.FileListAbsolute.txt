@@ -162,3 +162,9 @@ C:\Users\ITWORK\Documents\GitHub\CafeGame\CafeGameAPI\CafeGameAPI\obj\Debug\net6
 C:\Users\ITWORK\Documents\GitHub\CafeGame\CafeGameAPI\CafeGameAPI\obj\Debug\net6.0\staticwebassets\msbuild.buildTransitive.CafeGameAPI.props
 C:\Users\ITWORK\Documents\GitHub\CafeGame\CafeGameAPI\CafeGameAPI\obj\Debug\net6.0\staticwebassets.pack.json
 C:\Users\ITWORK\Documents\GitHub\CafeGame\CafeGameAPI\CafeGameAPI\obj\Debug\net6.0\refint\CafeGameAPI.dll
+C:\Users\ITWORK\Documents\GitHub\CafeGame\CafeGameAPI\CafeGameAPI\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\ITWORK\Documents\GitHub\CafeGame\CafeGameAPI\CafeGameAPI\bin\Debug\net6.0\Microsoft.AspNetCore.Cryptography.Internal.dll
+C:\Users\ITWORK\Documents\GitHub\CafeGame\CafeGameAPI\CafeGameAPI\bin\Debug\net6.0\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
+C:\Users\ITWORK\Documents\GitHub\CafeGame\CafeGameAPI\CafeGameAPI\bin\Debug\net6.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
+C:\Users\ITWORK\Documents\GitHub\CafeGame\CafeGameAPI\CafeGameAPI\bin\Debug\net6.0\Microsoft.Extensions.Identity.Core.dll
+C:\Users\ITWORK\Documents\GitHub\CafeGame\CafeGameAPI\CafeGameAPI\bin\Debug\net6.0\Microsoft.Extensions.Identity.Stores.dll

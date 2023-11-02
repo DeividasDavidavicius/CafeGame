@@ -1,4 +1,7 @@
-﻿namespace CafeGameAPI.Data.Entities
+﻿using CafeGameAPI.Auth.Models;
+using System.ComponentModel.DataAnnotations;
+
+namespace CafeGameAPI.Data.Entities
 {
     public class InternetCafe
     {

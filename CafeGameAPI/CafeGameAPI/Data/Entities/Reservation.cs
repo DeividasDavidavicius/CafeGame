@@ -1,4 +1,7 @@
-﻿namespace CafeGameAPI.Data.Entities
+﻿using CafeGameAPI.Auth.Models;
+using System.ComponentModel.DataAnnotations;
+
+namespace CafeGameAPI.Data.Entities
 {
     public class Reservation
     {
@@ -7,5 +10,8 @@
         public DateTime Start { get; set; }
         public DateTime End { get; set; }
         public Computer Computer { get; set; }
+        [Required]
+        public string UserId { get; set; }
+        public CafeGameUser User { get; set; }
     }
 }

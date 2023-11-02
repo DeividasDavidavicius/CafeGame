@@ -1,9 +1,11 @@
-﻿using CafeGameAPI.Data.Entities;
+﻿using CafeGameAPI.Auth.Models;
+using CafeGameAPI.Data.Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace CafeGameAPI.Data
 {
-    public class CafeGameDbContext : DbContext
+    public class CafeGameDbContext : IdentityDbContext<CafeGameUser>
     {
         public DbSet<InternetCafe> InternetCafes { get; set; }
         public DbSet<Computer> Computers { get; set; }
