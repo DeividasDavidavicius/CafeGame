@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CafeGameAPI.Data.Entities
 {
-    public class Reservation
+    public class Reservation : IUserOwnedResource
     {
         public int Id { get; set; }
         public string Name { get; set; }

@@ -1,7 +1,11 @@
-﻿using CafeGameAPI.Data.Dtos;
+﻿using CafeGameAPI.Auth.Models;
+using CafeGameAPI.Data.Dtos;
 using CafeGameAPI.Data.Entities;
 using CafeGameAPI.Data.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace CafeGameAPI.Controllers
 {
@@ -12,15 +16,18 @@ namespace CafeGameAPI.Controllers
         private readonly IInternetCafesRepository _internetCafesRepository;
         private readonly IComputersRepository _computersRepository;
         private readonly IReservationsRepository _reservationsRepository;
+        private readonly IAuthorizationService _authorizationService;
 
-        public ReservationsController(IInternetCafesRepository internetCafesRepository, IComputersRepository computersRepository, IReservationsRepository reservationsRepository)
+        public ReservationsController(IInternetCafesRepository internetCafesRepository, IComputersRepository computersRepository, IReservationsRepository reservationsRepository, IAuthorizationService authorizationService)
         {
             _internetCafesRepository = internetCafesRepository;
             _computersRepository = computersRepository;
             _reservationsRepository = reservationsRepository;
+            _authorizationService = authorizationService;
         }
 
         [HttpPost]
+        [Authorize(Roles = UserRoles.RegisteredUser)]
         public async Task<ActionResult<ReservationDto>> Create(int internetCafeId, int computerId, CreateReservationDto createReservationDto)
         {
             var internetCafe = await _internetCafesRepository.GetAsync(internetCafeId);
@@ -56,7 +63,8 @@ namespace CafeGameAPI.Controllers
                 Name = createReservationDto.Name,
                 Start = createReservationDto.Start,
                 End = createReservationDto.End,
-                Computer = computer
+                Computer = computer,
+                UserId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)
             };
 
             await _reservationsRepository.CreateAsync(reservation);
@@ -116,6 +124,7 @@ namespace CafeGameAPI.Controllers
         }
         
         [HttpPatch]
+        [Authorize(Roles = UserRoles.RegisteredUser)]
         [Route("{reservationId}")]
         public async Task<ActionResult<ReservationDto>> Update(int internetCafeId, int computerId, int reservationId, UpdateReservationDto updateReservationDto)
         {
@@ -139,6 +148,10 @@ namespace CafeGameAPI.Controllers
             {
                 return NotFound();
             }
+
+            var authorizationResult = await _authorizationService.AuthorizeAsync(User, reservation, PolicyNames.ResourceOwner);
+            if (!authorizationResult.Succeeded)
+                return Forbid();
 
             reservation.Name = updateReservationDto.Name;
 
@@ -171,6 +184,10 @@ namespace CafeGameAPI.Controllers
             {
                 return NotFound();
             }
+
+            var authorizationResult = await _authorizationService.AuthorizeAsync(User, reservation, PolicyNames.ResourceOwner);
+            if (!authorizationResult.Succeeded)
+                return Forbid();
 
             await _reservationsRepository.DeleteAsync(reservation);
 
