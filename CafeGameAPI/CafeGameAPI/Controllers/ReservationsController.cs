@@ -161,6 +161,7 @@ namespace CafeGameAPI.Controllers
         }
 
         [HttpDelete]
+        [Authorize(Roles = UserRoles.RegisteredUser)]
         [Route("{reservationId}")]
         public async Task<ActionResult> Delete(int internetCafeId, int computerId, int reservationId)
         {

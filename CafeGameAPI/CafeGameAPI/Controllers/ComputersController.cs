@@ -1,6 +1,8 @@
-﻿using CafeGameAPI.Data.Dtos;
+﻿using CafeGameAPI.Auth.Models;
+using CafeGameAPI.Data.Dtos;
 using CafeGameAPI.Data.Entities;
 using CafeGameAPI.Data.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CafeGameAPI.Controllers
@@ -11,6 +13,7 @@ namespace CafeGameAPI.Controllers
     {
         private readonly IInternetCafesRepository _internetCafesRepository;
         private readonly IComputersRepository _computersRepository;
+
         public ComputersController(IInternetCafesRepository internetCafesRepository, IComputersRepository computersRepository)
         {
             _internetCafesRepository = internetCafesRepository;
@@ -18,6 +21,7 @@ namespace CafeGameAPI.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = UserRoles.Admin)]
         public async Task<ActionResult<ComputerDto>> Create(int internetCafeId, CreateComputerDto createComputerDto)
         {
             var internetCafe = await _internetCafesRepository.GetAsync(internetCafeId);
@@ -80,6 +84,7 @@ namespace CafeGameAPI.Controllers
         }
 
         [HttpPut]
+        [Authorize(Roles = UserRoles.Admin)]
         [Route("{computerId}")]
         public async Task<ActionResult<ComputerDto>> Update(int internetCafeId, int computerId, UpdateComputerDto updateComputerDto)
         {
@@ -109,6 +114,7 @@ namespace CafeGameAPI.Controllers
         }
 
         [HttpDelete]
+        [Authorize(Roles = UserRoles.Admin)]
         [Route("{computerId}")]
         public async Task<ActionResult> Delete(int internetCafeId, int computerId)
         {

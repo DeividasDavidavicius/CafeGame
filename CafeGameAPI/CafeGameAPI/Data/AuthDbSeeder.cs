@@ -17,14 +17,15 @@ namespace CafeGameAPI.Data
         public async Task SeedAsync()
         {
             await AddDefaultRoles();
-            await AddAdminUser();
+            await AddAdminUser("admin");
+            await AddAdminUser("admin2");
         }
 
-        private async Task AddAdminUser()
+        private async Task AddAdminUser(string AdminName)
         {
             var newAdminUser = new CafeGameUser()
             {
-                UserName = "admin",
+                UserName = AdminName,
                 Email = "admin@admin.com"
             };
 

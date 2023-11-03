@@ -37,7 +37,7 @@ namespace CafeGameAPI.Auth
             var accessSecurityToken = new JwtSecurityToken(
                 issuer: _issuer,
                 audience: _audience,
-                expires: DateTime.UtcNow.AddHours(1), // TODO change to 5mins
+                expires: DateTime.UtcNow.AddMinutes(1), // TODO change to 5mins
                 claims: authClaims,
                 signingCredentials: new SigningCredentials(_authSignKey, SecurityAlgorithms.HmacSha256)
             );
