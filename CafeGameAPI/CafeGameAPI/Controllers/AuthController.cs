@@ -3,6 +3,8 @@ using CafeGameAPI.Auth.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace CafeGameAPI.Controllers
 {
@@ -57,11 +59,70 @@ namespace CafeGameAPI.Controllers
             if (!isPasswordValid)
                 return BadRequest("Username or password is invalid!");
 
-            // valid user
-            var roles = await _userManager.GetRolesAsync(user);
-            var accessToken = _jwtTokenService.CreateAccessToken(user.UserName, user.Id, roles);
+            user.Relogin = false;
+            await _userManager.UpdateAsync(user);
 
-            return Ok(new SuccessfulLoginDto(accessToken));
+            var roles = await _userManager.GetRolesAsync(user);
+           
+            var accessToken = _jwtTokenService.CreateAccessToken(user.UserName, user.Id, roles);
+            var refreshToken = _jwtTokenService.CreateRefreshToken(user.Id);
+
+            return Ok(new SuccessfulLoginDto(accessToken, refreshToken));
+        }
+
+        [HttpPost]
+        [Route("accessToken")]
+        public async Task<IActionResult> AccessToken(RefreshAccessTokenDto refreshAccessTokenDto)
+        {
+            if(!_jwtTokenService.TryParseRefreshToken(refreshAccessTokenDto.RefreshToken, out var claims))
+            {
+                return UnprocessableEntity();
+            }
+
+            var userId = claims.FindFirstValue(JwtRegisteredClaimNames.Sub);
+
+            var user = await _userManager.FindByIdAsync(userId);
+
+            if(user == null)
+            {
+                return UnprocessableEntity("Invalid token");
+            }
+
+            if(user.Relogin)
+            {
+                return UnprocessableEntity();
+            }
+
+            var roles = await _userManager.GetRolesAsync(user);
+
+            var accessToken = _jwtTokenService.CreateAccessToken(user.UserName, user.Id, roles);
+            var refreshToken = _jwtTokenService.CreateRefreshToken(user.Id);
+
+            return Ok(new SuccessfulLoginDto(accessToken, refreshToken));
+        }
+
+        [HttpPost]
+        [Route("logout")]
+        public async Task<IActionResult> Logout()
+        {
+            var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub);
+
+            var user = await _userManager.FindByIdAsync(userId);
+
+            if (user == null)
+            {
+                return UnprocessableEntity("Invalid token");
+            }
+
+            if(user.Relogin)
+            {
+                return UnprocessableEntity("You have already logged out!");
+            }
+
+            user.Relogin = true;
+            await _userManager.UpdateAsync(user);
+
+            return Ok("Succesfully logged out!");
         }
     }
 }
