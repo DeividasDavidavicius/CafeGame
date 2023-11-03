@@ -8,8 +8,8 @@ namespace CafeGameAPI.Auth
     public interface IJwtTokenService
     {
         string CreateAccessToken(string userName, string userId, IEnumerable<string> UserRoles);
-        public string CreateRefreshToken(string userId);
-        public bool TryParseRefreshToken(string refreshToken, out ClaimsPrincipal? claims);
+        string CreateRefreshToken(string userId);
+        bool TryParseRefreshToken(string refreshToken, out ClaimsPrincipal? claims);
     }
 
     public class JwtTokenService : IJwtTokenService
