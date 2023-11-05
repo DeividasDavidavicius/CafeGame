@@ -8,12 +8,12 @@ RUN dotnet restore -r linux-musl-x64 /p:PublishReadyToRun=true
 
 # copy everything else and build app
 COPY CafeGameAPI/CafeGameAPI/. .
-RUN dotnet publish -c Release -o /app -r linux-musl-x64 --self-contained true --no-restore /p:PublishReadyToRun=true /p:PublishSingleFile=true
+RUN dotnet publish -c Release -o /CafeGameAPI -r linux-musl-x64 --self-contained true --no-restore /p:PublishReadyToRun=true /p:PublishSingleFile=true
 
 # final stage/image
 FROM mcr.microsoft.com/dotnet/runtime-deps:7.0-alpine-amd64
-WORKDIR /app
-COPY --from=build /app .
+WORKDIR /CafeGameAPI
+COPY --from=build /CafeGameAPI .
 ENTRYPOINT ["./CafeGameAPI/CafeGameAPI"]
 
 # See: https://github.com/dotnet/announcements/issues/20
