@@ -19,6 +19,7 @@ namespace CafeGameAPI.Data
             await AddDefaultRoles();
             await AddAdminUser("admin");
             await AddAdminUser("admin2");
+            Console.WriteLine("Added");
         }
 
         private async Task AddAdminUser(string AdminName)
