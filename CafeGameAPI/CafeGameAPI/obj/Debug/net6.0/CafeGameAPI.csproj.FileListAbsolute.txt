@@ -168,3 +168,5 @@ C:\Users\ITWORK\Documents\GitHub\CafeGame\CafeGameAPI\CafeGameAPI\bin\Debug\net6
 C:\Users\ITWORK\Documents\GitHub\CafeGame\CafeGameAPI\CafeGameAPI\bin\Debug\net6.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
 C:\Users\ITWORK\Documents\GitHub\CafeGame\CafeGameAPI\CafeGameAPI\bin\Debug\net6.0\Microsoft.Extensions.Identity.Core.dll
 C:\Users\ITWORK\Documents\GitHub\CafeGame\CafeGameAPI\CafeGameAPI\bin\Debug\net6.0\Microsoft.Extensions.Identity.Stores.dll
+C:\Users\ITWORK\Documents\GitHub\CafeGame\CafeGameAPI\CafeGameAPI\bin\Debug\net6.0\Npgsql.dll
+C:\Users\ITWORK\Documents\GitHub\CafeGame\CafeGameAPI\CafeGameAPI\bin\Debug\net6.0\Npgsql.EntityFrameworkCore.PostgreSQL.dll

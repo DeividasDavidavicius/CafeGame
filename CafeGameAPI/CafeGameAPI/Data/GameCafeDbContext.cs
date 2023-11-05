@@ -11,9 +11,16 @@ namespace CafeGameAPI.Data
         public DbSet<Computer> Computers { get; set; }
         public DbSet<Reservation> Reservations { get; set; }
 
+        private readonly IConfiguration _configuration;
+
+        public CafeGameDbContext(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB; Initial Catalog=InternetCafeDb");
+            optionsBuilder.UseNpgsql(_configuration.GetValue<string>("PostgreSqlConnectionString"));
         }
     }
 }

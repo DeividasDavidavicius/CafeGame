@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "ZD/PCMQU8UMxpz6vNycRmGWxUqJywoVNKM2fjFQTH7H7Va5gOHu2VLcNOFM69Ng4rVb/Ful6XVo5b7AL89RqaQ==",
+  "dgSpecHash": "cY5pgRKUo9tnJ0UPWerdKXbyo+EonPr6lsyAk9q4/C48Pd1sLSKOn7GkP7nVw44qsaaHB6mNSCz7DjcKW3DFmQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\ITWORK\\Documents\\GitHub\\CafeGame\\CafeGameAPI\\CafeGameAPI\\CafeGameAPI.csproj",
   "expectedPackageFiles": [
@@ -67,6 +67,8 @@
     "C:\\Users\\ITWORK\\.nuget\\packages\\microsoft.win32.registry\\4.5.0\\microsoft.win32.registry.4.5.0.nupkg.sha512",
     "C:\\Users\\ITWORK\\.nuget\\packages\\microsoft.win32.systemevents\\6.0.0\\microsoft.win32.systemevents.6.0.0.nupkg.sha512",
     "C:\\Users\\ITWORK\\.nuget\\packages\\mono.texttemplating\\2.2.1\\mono.texttemplating.2.2.1.nupkg.sha512",
+    "C:\\Users\\ITWORK\\.nuget\\packages\\npgsql\\6.0.7\\npgsql.6.0.7.nupkg.sha512",
+    "C:\\Users\\ITWORK\\.nuget\\packages\\npgsql.entityframeworkcore.postgresql\\6.0.7\\npgsql.entityframeworkcore.postgresql.6.0.7.nupkg.sha512",
     "C:\\Users\\ITWORK\\.nuget\\packages\\system.buffers\\4.5.0\\system.buffers.4.5.0.nupkg.sha512",
     "C:\\Users\\ITWORK\\.nuget\\packages\\system.codedom\\4.4.0\\system.codedom.4.4.0.nupkg.sha512",
     "C:\\Users\\ITWORK\\.nuget\\packages\\system.configuration.configurationmanager\\6.0.1\\system.configuration.configurationmanager.6.0.1.nupkg.sha512",
