@@ -50,7 +50,6 @@
   font-weight: bold
 }
 
-.white-button {
-  color: white;
-  font-weight: bold
+.divbtn {
+  float: left;
 }

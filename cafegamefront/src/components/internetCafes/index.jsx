@@ -23,17 +23,17 @@ const CafeList = () => {
                     <h2>Internet cafe list</h2>
                 </div>
                 <div className="card-body">
-                    <div className="text-container">
-                        <Link className="btn btn-info">Add internet cafe (+)</Link>
+                    <div className="divbtn">
+                        <Link to="create" className="btn btn-primary">Add internet cafe (+)</Link>
                     </div>
-                    <div style={{ height: '10px' }} />
+                    <div style={{ height: '10px' }}/>
                     <table className="table table-bordered">
-                        <thead className="bg-dark text-white">
+                        <thead>
                             <tr>
-                                <td>ID</td>
-                                <td>Name</td>
-                                <td>Address</td>
-                                <td>Actions</td>
+                                <td className="bg-dark text-white">ID</td>
+                                <td className="bg-dark text-white">Name</td>
+                                <td className="bg-dark text-white">Address</td>
+                                <td className="bg-dark text-white">Action</td>
                             </tr>
                         </thead>
                         <tbody>
