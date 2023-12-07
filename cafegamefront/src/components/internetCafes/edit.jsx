@@ -43,7 +43,7 @@ function EditInternetCafe() {
                     <form className="container" onSubmit={handleSubmit}>
                         <div className="card">
                             <div className="card-title">
-                                <h2>Create internet cafe</h2>
+                                <h2>Edit internet cafe {name}</h2>
                             </div>
                             <div className="card-body">
                                 <div className="row">

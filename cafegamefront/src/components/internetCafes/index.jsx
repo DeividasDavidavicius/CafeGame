@@ -1,21 +1,31 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from 'react-router-dom';
-import { getInternetCafes } from "../../services/internetCafeService";
+import { deleteInternetCafe, getInternetCafes } from "../../services/internetCafeService";
 
 function InternetCafes() {
     const [internetCafesData, setInternetCafesData] = useState([]);
     const navigate = useNavigate();
 
-    const LoadDetail = (id) => {
-        navigate("Info/"+id)
-    }
-
     const LoadEdit = (id) => {
         navigate("edit/" + id)
     }
 
-    const Remove = (id) => {
+    const findInternetCafeById = (id) => {
+        const foundCafe = internetCafesData.find((cafe) => cafe.id === id);
 
+        return foundCafe;
+      };
+
+    const Remove = (id) => {
+        if(window.confirm(`Do you want to remove '${findInternetCafeById(id).name}'?`))
+        {
+            deleteInternetCafe(id);
+
+            const updatedInternetCafes = internetCafesData.filter(
+                (internetCafe) => internetCafe.id !== id
+              );
+            setInternetCafesData(updatedInternetCafes);
+        }
     }
 
     useEffect(()=>{
@@ -57,7 +67,6 @@ function InternetCafes() {
                                         <td>{item.address}</td>
                                         <td><a onClick={()=>{LoadEdit(item.id)}} className="btn btn-success">Edit</a>
                                             <a onClick={()=>{Remove(item.id)}} className="btn btn-danger">Remove</a>
-                                            <a onClick={()=>{LoadDetail(item.id)}} className="btn btn-danger">INFO</a>
                                         </td>
                                     </tr>
                                 ))

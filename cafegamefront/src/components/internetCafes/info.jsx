@@ -6,7 +6,7 @@ function InfoInternetCafe() {
     const { internetCafeId } = useParams();
     console.log(internetCafeId)
     return (
-        <div></div>
+        <div><p>wasd123</p></div>
     );
 }
 
