@@ -1,23 +1,20 @@
 import { useEffect, useState } from "react";
-import axios from 'axios';
-import { API_URL } from '../../utils/constants';
+import { Link } from 'react-router-dom';
+import { getInternetCafes } from "../../services/internetCafeService";
 
 const CafeList = () => {
-    const [internetCafeData, setInternetCafeData] = useState(null);
+    const [internetCafeData, setInternetCafeData] = useState([]);
 
     useEffect(()=>{
-        const apiUrl = `${API_URL}/internetCafes`;
+        const getInternetCafeData = async () => {
+            const result = await getInternetCafes();
+            setInternetCafeData(result);
+            console.log(result);
+        };
 
-        axios.get(apiUrl)
-        .then(response => {
-            setInternetCafeData(response.data)
-        })
-        .catch(error => {
-            console.error('Error fetching data', error);
-        })
+        getInternetCafeData();
     }, []);
 
-    console.log(internetCafeData);
 
     return (
         <div className="container">
@@ -26,15 +23,32 @@ const CafeList = () => {
                     <h2>Internet cafe list</h2>
                 </div>
                 <div className="card-body">
+                    <div className="text-container">
+                        <Link className="btn btn-info">Add internet cafe (+)</Link>
+                    </div>
+                    <div style={{ height: '10px' }} />
                     <table className="table table-bordered">
                         <thead className="bg-dark text-white">
                             <tr>
                                 <td>ID</td>
                                 <td>Name</td>
                                 <td>Address</td>
+                                <td>Actions</td>
                             </tr>
                         </thead>
                         <tbody>
+                            {
+                                internetCafeData.map(item => (
+                                    <tr key={item.id}>
+                                        <td>{item.id}</td>
+                                        <td>{item.name}</td>
+                                        <td>{item.address}</td>
+                                        <td><a className="btn btn-success">Edit</a>
+                                            <a className="btn btn-danger">Remove</a>
+                                        </td>
+                                    </tr>
+                                ))
+                            }
 
                         </tbody>
                     </table>

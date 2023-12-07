@@ -36,3 +36,21 @@
     transform: rotate(360deg);
   }
 }
+
+.btn {
+  padding: 5px;
+  margin: 5px;
+  cursor: pointer;
+}
+
+
+.text-container {
+  width: 200px;
+  color: white;
+  font-weight: bold
+}
+
+.white-button {
+  color: white;
+  font-weight: bold
+}
