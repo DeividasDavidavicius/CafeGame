@@ -4,6 +4,7 @@ import React from 'react';
 import './App.css';
 import CreateInternetCafe from './components/internetCafes/create';
 import EditInternetCafe from './components/internetCafes/edit';
+import InfoInternetCafe from './components/internetCafes/info';
 
 function App() {
   return (
@@ -12,8 +13,9 @@ function App() {
       <Router>
         <Routes>
           <Route path='/internetCafes' element={<InternetCafes />}></Route>
+          <Route path='/internetCafes/info/:internetCafeId' element={<InfoInternetCafe />}></Route>
           <Route path='/internetCafes/create' element={<CreateInternetCafe></CreateInternetCafe>}></Route>
-          <Route path='/internetCafes/edit:internetcafeid' element={<EditInternetCafe></EditInternetCafe>}></Route>
+          <Route path='/internetCafes/edit/:internetCafeId' element={<EditInternetCafe></EditInternetCafe>}></Route>
         </Routes>
       </Router>
     </div>

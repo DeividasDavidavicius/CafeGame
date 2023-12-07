@@ -1,18 +1,30 @@
 import { useEffect, useState } from "react";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { getInternetCafes } from "../../services/internetCafeService";
 
-const CafeList = () => {
-    const [internetCafeData, setInternetCafeData] = useState([]);
+function InternetCafes() {
+    const [internetCafesData, setInternetCafesData] = useState([]);
+    const navigate = useNavigate();
+
+    const LoadDetail = (id) => {
+        navigate("Info/"+id)
+    }
+
+    const LoadEdit = (id) => {
+        navigate("edit/" + id)
+    }
+
+    const Remove = (id) => {
+
+    }
 
     useEffect(()=>{
-        const getInternetCafeData = async () => {
+        const getInternetCafesData = async () => {
             const result = await getInternetCafes();
-            setInternetCafeData(result);
-            console.log(result);
+            setInternetCafesData(result);
         };
 
-        getInternetCafeData();
+        getInternetCafesData();
     }, []);
 
 
@@ -38,13 +50,14 @@ const CafeList = () => {
                         </thead>
                         <tbody>
                             {
-                                internetCafeData.map(item => (
+                                internetCafesData.map(item => (
                                     <tr key={item.id}>
                                         <td>{item.id}</td>
                                         <td>{item.name}</td>
                                         <td>{item.address}</td>
-                                        <td><a className="btn btn-success">Edit</a>
-                                            <a className="btn btn-danger">Remove</a>
+                                        <td><a onClick={()=>{LoadEdit(item.id)}} className="btn btn-success">Edit</a>
+                                            <a onClick={()=>{Remove(item.id)}} className="btn btn-danger">Remove</a>
+                                            <a onClick={()=>{LoadDetail(item.id)}} className="btn btn-danger">INFO</a>
                                         </td>
                                     </tr>
                                 ))
@@ -58,4 +71,4 @@ const CafeList = () => {
     );
 }
 
-export default CafeList;
+export default InternetCafes;
