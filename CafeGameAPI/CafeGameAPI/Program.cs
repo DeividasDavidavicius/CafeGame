@@ -30,6 +30,18 @@ builder.Services.AddIdentity<CafeGameUser, IdentityRole>()
     .AddEntityFrameworkStores<CafeGameDbContext>()
     .AddDefaultTokenProviders();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowReactApp",
+        builder =>
+        {
+            builder.WithOrigins("http://localhost:3000")
+                   .AllowAnyHeader()
+                   .AllowAnyMethod()
+                   .AllowCredentials();
+        });
+});
+
 builder.Services.AddDbContext<CafeGameDbContext>();
 
 builder.Services.AddAuthentication(options =>
@@ -60,6 +72,7 @@ builder.Services.AddSingleton<IAuthorizationHandler, ResourceOwnerAuthorizationH
 
 var app = builder.Build();
 
+app.UseCors("AllowReactApp");
 app.UseRouting();
 app.MapControllers();
 app.UseAuthentication();
