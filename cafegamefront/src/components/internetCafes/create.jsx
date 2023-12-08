@@ -4,8 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { postInternetCafe } from '../../services/internetCafeService';
 
 function CreateInternetCafe() {
-    const [name, nameChange] = useState("");
-    const [address, addressChange] = useState("");
+    const [name, setName] = useState("");
+    const [address, setAddress] = useState("");
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
@@ -31,7 +31,7 @@ function CreateInternetCafe() {
                                     <div className="col-lg-12">
                                         <div className="form-group">
                                             <label>Name</label>
-                                            <input value={name} onChange={(e => nameChange(e.target.value))} required className="form-control"></input>
+                                            <input value={name} onChange={(e => setName(e.target.value))} required className="form-control"></input>
                                             {name.length == 0 && <span className="text-danger">Enter the name</span>}
                                         </div>
                                     </div>
@@ -39,7 +39,7 @@ function CreateInternetCafe() {
                                     <div className="col-lg-12">
                                         <div className="form-group">
                                             <label>Address</label>
-                                            <input value={address} onChange={(e => addressChange(e.target.value))} required className="form-control"></input>
+                                            <input value={address} onChange={(e => setAddress(e.target.value))} required className="form-control"></input>
                                             {address.length == 0 && <span className="text-danger">Enter the address</span>}
                                         </div>
                                     </div>

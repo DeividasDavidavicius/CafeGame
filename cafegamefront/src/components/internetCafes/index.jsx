@@ -46,7 +46,7 @@ function InternetCafes() {
                 </div>
                 <div className="card-body">
                     <div className="divbtn">
-                        <Link to="create" className="btn btn-primary">Add internet cafe (+)</Link>
+                        <Link to="create" className="btn btn-outline-success">Add internet cafe (+)</Link>
                     </div>
                     <div style={{ height: '10px' }}/>
                     <table className="table table-bordered">
@@ -65,8 +65,8 @@ function InternetCafes() {
                                         <td>{item.id}</td>
                                         <td>{item.name}</td>
                                         <td>{item.address}</td>
-                                        <td><a onClick={()=>{LoadEdit(item.id)}} className="btn btn-success">Edit</a>
-                                            <a onClick={()=>{Remove(item.id)}} className="btn btn-danger">Remove</a>
+                                        <td><a onClick={()=>{LoadEdit(item.id)}} className="btn btn-outline-primary">Edit</a>
+                                            <a onClick={()=>{Remove(item.id)}} className="btn btn-outline-danger">Remove</a>
                                         </td>
                                     </tr>
                                 ))

@@ -5,9 +5,9 @@ import { getInternetCafe, putInternetCafe } from "../../services/internetCafeSer
 function EditInternetCafe() {
     const {internetCafeId} = useParams();
     const [internetCafeData,  setInternetCafeData] = useState({});
-    const [name, nameChange] = useState("");
-    const [address, addressChange] = useState("");
-    const [validation, validationChange] = useState(false);
+    const [name, setName] = useState("");
+    const [address, setAddress] = useState("");
+    const [validation, setValidation] = useState(false);
     const navigate = useNavigate();
 
 
@@ -16,8 +16,8 @@ function EditInternetCafe() {
             const result = await getInternetCafe(internetCafeId);
             setInternetCafeData(result);
 
-            nameChange(result.name);
-            addressChange(result.address);
+            setName(result.name);
+            setAddress(result.address);
         };
 
         getInternetCafesData();
@@ -29,7 +29,7 @@ function EditInternetCafe() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const postData = {name, address};
-        validationChange(true);
+        setValidation(true);
 
         await putInternetCafe(postData, internetCafeId);
 
@@ -50,7 +50,7 @@ function EditInternetCafe() {
                                     <div className="col-lg-12">
                                         <div className="form-group">
                                             <label>Name</label>
-                                            <input value={name} onMouseDown={e=>validationChange(true)} onChange={(e => nameChange(e.target.value))} required className="form-control"></input>
+                                            <input value={name} onMouseDown={e=>setValidation(true)} onChange={(e => setName(e.target.value))} required className="form-control"></input>
                                             {name.length == 0 && validation && <span className="text-danger">Enter the name</span>}
                                         </div>
                                     </div>
@@ -58,7 +58,7 @@ function EditInternetCafe() {
                                     <div className="col-lg-12">
                                         <div className="form-group">
                                             <label>Address</label>
-                                            <input value={address} onMouseDown={e=>validationChange(true)} onChange={(e => addressChange(e.target.value))} required className="form-control"></input>
+                                            <input value={address} onMouseDown={e=>setValidation(true)} onChange={(e => setAddress(e.target.value))} required className="form-control"></input>
                                             {address.length == 0 && validation && <span className="text-danger">Enter the address</span>}
                                         </div>
                                     </div>
