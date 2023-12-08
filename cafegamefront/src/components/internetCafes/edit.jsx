@@ -7,12 +7,11 @@ import { checkTokenValidity, refreshAccessToken } from "../../services/authentic
 
 function EditInternetCafe() {
     const { internetCafeId } = useParams();
-    const [internetCafeData, setInternetCafeData] = useState({});
     const [name, setName] = useState("");
     const [address, setAddress] = useState("");
     const [validation, setValidation] = useState(false);
     const navigate = useNavigate();
-    const { isLoggedIn, role, accessToken, refreshToken, setLogin, setLogout } = useUser();
+    const { role, setLogin, setLogout } = useUser();
     const openSnackbar = useContext(SnackbarContext);
 
     useEffect(() => {
@@ -24,8 +23,6 @@ function EditInternetCafe() {
         const getInternetCafeData = async () => {
             try{
                 const result = await getInternetCafe(internetCafeId);
-                setInternetCafeData(result);
-
                 setName(result.name);
                 setAddress(result.address);
             }
@@ -37,10 +34,7 @@ function EditInternetCafe() {
         };
 
         getInternetCafeData();
-
-
     }, []);
-
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -81,7 +75,7 @@ function EditInternetCafe() {
                                         <div className="form-group">
                                             <label>Name</label>
                                             <input value={name} onMouseDown={e => setValidation(true)} onChange={(e => setName(e.target.value))} required className="form-control"></input>
-                                            {name.length == 0 && validation && <span className="text-danger">Enter the name</span>}
+                                            {name.length === 0 && validation && <span className="text-danger">Enter the name</span>}
                                         </div>
                                     </div>
 
@@ -89,7 +83,7 @@ function EditInternetCafe() {
                                         <div className="form-group">
                                             <label>Address</label>
                                             <input value={address} onMouseDown={e => setValidation(true)} onChange={(e => setAddress(e.target.value))} required className="form-control"></input>
-                                            {address.length == 0 && validation && <span className="text-danger">Enter the address</span>}
+                                            {address.length === 0 && validation && <span className="text-danger">Enter the address</span>}
                                         </div>
                                     </div>
                                     <div className="col-lg-12">

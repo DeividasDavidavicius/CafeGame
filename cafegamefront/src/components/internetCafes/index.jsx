@@ -13,7 +13,7 @@ function InternetCafes() {
     const [currentCafe, setCurrentCafe] = useState({});
     const openSnackbar = useContext(SnackbarContext);
     const navigate = useNavigate();
-    const { isLoggedIn, role, accessToken, refreshToken, setLogin, setLogout } = useUser();
+    const { setLogin, setLogout } = useUser();
 
     const LoadEdit = (id) => {
         navigate("edit/" + id)

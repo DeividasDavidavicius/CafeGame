@@ -7,11 +7,10 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import { useUser } from "../contexts/UserContext";
 import { useContext, useState } from "react";
 import { checkTokenValidity, logout, refreshAccessToken } from "../services/authentication";
-import ImportantDevicesIcon from '@mui/icons-material/ImportantDevices';
 import SnackbarContext from "../contexts/SnackbarContext";
 
 function Header() {
-    const { isLoggedIn, role, accessToken, refreshToken, setLogin, setLogout } = useUser();
+    const { isLoggedIn, role, accessToken, setLogin, setLogout } = useUser();
     const navigation = useNavigate();
     const openSnackbar = useContext(SnackbarContext);
 
@@ -90,12 +89,9 @@ function Header() {
     ];
 
     const imageClick = [
-        {
-          route: { name: 'Main', route: '/' },
-        },
+        { name: 'Main', route: '/' },
       ];
 
-      console.log('SVG Path:', imageClick[0].svgPath);
 
 
     return (

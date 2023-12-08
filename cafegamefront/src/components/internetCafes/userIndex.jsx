@@ -5,6 +5,7 @@ import { getInternetCafes } from '../../services/internetCafeService';
 
 const InternetCafesList = () => {
     const [internetCafesData, setInternetCafesData] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const getInternetCafesData = async () => {
@@ -16,16 +17,6 @@ const InternetCafesList = () => {
         getInternetCafesData();
     }, []);
 
-
-
-    const internetCafes = [
-        { id: 1, name: 'Cafe 1', address: 'Address 1', imageUrl: '/path-to-image/cafe1.jpg' },
-        { id: 2, name: 'Cafe 2', address: 'Address 2', imageUrl: '/path-to-image/cafe2.jpg' },
-        { id: 3, name: 'Cafe 1', address: 'Address 1', imageUrl: '/path-to-image/cafe1.jpg' },
-        { id: 4, name: 'Cafe 2', address: 'Address 2', imageUrl: '/path-to-image/cafe2.jpg' },
-        { id: 5, name: 'Cafe 2', address: 'Address 2', imageUrl: '/path-to-image/cafe2.jpg' },
-    ];
-
     return (
 <div className="container">
   <div className="card">
@@ -35,7 +26,7 @@ const InternetCafesList = () => {
       <Grid container spacing={0}>
         {internetCafesData.map((cafe) => (
           <Grid key={cafe.id} item xs={12} sm={6} md={4} lg={3} xl={3}>
-            <Link to={`/internet-cafe/${cafe.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+            <Link to={`/internetCafes/${cafe.id}/computers`} style={{ textDecoration: 'none', color: 'inherit' }}>
               <Card
                 sx={{
                   margin: '10px', // Adjust the margin as needed (half of the original spacing)
@@ -52,7 +43,7 @@ const InternetCafesList = () => {
                     mt: 2,
                     borderRadius: '50%',
                     overflow: 'hidden',
-                    backgroundColor: 'transparent', // Set background color to transparent
+                    backgroundColor: 'transparent',
                   }}
                 >
                   <img
