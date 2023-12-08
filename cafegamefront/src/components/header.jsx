@@ -86,12 +86,17 @@ function Header() {
 
 
     const pages = [
-        { name: 'Internet cafes', route: 'admin/internetCafes/' }
+        { name: 'Internet cafes', route: 'internetCafes/' }
     ];
 
     const imageClick = [
-        { name: 'Main', route: '/' }
-    ]
+        {
+          route: { name: 'Main', route: '/' },
+        },
+      ];
+
+      console.log('SVG Path:', imageClick[0].svgPath);
+
 
     return (
         <AppBar position="static" style={{ backgroundColor: '#138c94' }} >
@@ -100,7 +105,7 @@ function Header() {
                     <div onClick={() => handleNavigation(imageClick[0].route)} style={{ textDecoration: 'none', color: 'white', cursor: 'pointer', pointerEvents: 'auto' }}>
                         <Link>
                             <Avatar sx={{ m: 1, bgcolor: 'error.light' }}>
-                                <ImportantDevicesIcon />
+                                <img src="/assets/CafeGameLogo.svg" alt="CafeGame icon" style={{ width: '100%', height: '100%' }} />
                             </Avatar>
                         </Link>
                     </div>

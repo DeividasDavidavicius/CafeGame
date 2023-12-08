@@ -9,6 +9,7 @@ import Login from './components/authentication/login';
 import Register2 from './components/authentication/register2';
 import Register from './components/authentication/register';
 import Header from './components/header';
+import InternetCafesList from './components/internetCafes/userIndex';
 
 
 function App() {
@@ -36,6 +37,7 @@ function App() {
           <Route path='/login' element={<Login />}></Route>
           <Route path='/register' element={<Register />}></Route>
           <Route path='/register2' element={<Register2 />}></Route>
+          <Route path='/internetCafes' element={<InternetCafesList />}></Route>
           <Route path='/admin/internetCafes' element={<InternetCafes />}></Route>
           <Route path='/admin/internetCafes/info/:internetCafeId' element={<InfoInternetCafe />}></Route>
           <Route path='/admin/internetCafes/create' element={<CreateInternetCafe></CreateInternetCafe>}></Route>

@@ -4,9 +4,13 @@ import { deleteInternetCafe, getInternetCafes } from "../../services/internetCaf
 import { checkTokenValidity, refreshAccessToken } from "../../services/authentication";
 import SnackbarContext from "../../contexts/SnackbarContext";
 import { useUser } from "../../contexts/UserContext";
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
+
 
 function InternetCafes() {
     const [internetCafesData, setInternetCafesData] = useState([]);
+    const [openRemoveModal, setOpenRemoveModal] = useState(false);
+    const [currentCafe, setCurrentCafe] = useState({});
     const openSnackbar = useContext(SnackbarContext);
     const navigate = useNavigate();
     const { isLoggedIn, role, accessToken, refreshToken, setLogin, setLogout } = useUser();
@@ -15,13 +19,17 @@ function InternetCafes() {
         navigate("edit/" + id)
     }
 
-    const findInternetCafeById = (id) => {
-        const foundCafe = internetCafesData.find((cafe) => cafe.id === id);
+    const handleOpenRemove = (cafe) => {
+        setCurrentCafe(cafe);
+        setOpenRemoveModal(true);
+    };
 
-        return foundCafe;
-      };
+    const handleCloseRemove = () => {
+        setOpenRemoveModal(false);
+        setCurrentCafe({});
+    };
 
-    const Remove = async (id) => {
+    const handleRemoveCafe = async () => {
         const accessToken = localStorage.getItem('accessToken');
         if (!checkTokenValidity(accessToken)) {
             const result = await refreshAccessToken();
@@ -35,18 +43,16 @@ function InternetCafes() {
             setLogin(result.response.data.accessToken, result.response.data.refreshToken);
         }
 
-        if(window.confirm(`Do you want to remove '${findInternetCafeById(id).name}'?`))
-        {
-            deleteInternetCafe(id);
+        deleteInternetCafe(currentCafe.id);
 
-            const updatedInternetCafes = internetCafesData.filter(
-                (internetCafe) => internetCafe.id !== id
-              );
-            setInternetCafesData(updatedInternetCafes);
-        }
+        const updatedInternetCafes = internetCafesData.filter(
+            (internetCafe) => internetCafe.id !== currentCafe.id
+        );
+        setInternetCafesData(updatedInternetCafes);
     }
 
-    useEffect(()=>{
+
+    useEffect(() => {
         const getInternetCafesData = async () => {
             const result = await getInternetCafes();
             const sortedResult = [...result].sort((a, b) => a.id - b.id);
@@ -59,22 +65,22 @@ function InternetCafes() {
 
     return (
         <div className="container">
-            <div className ="card">
+            <div className="card">
                 <div className="card-title">
                     <h2>Internet cafe list</h2>
                 </div>
                 <div className="card-body">
                     <div className="divbtn">
-                        <Link to="create" className="btn btn-outline-success">Add internet cafe (+)</Link>
+                        <Link to="create" className="btn btn-outline-dark" style={{ fontWeight: 'bold', color: '#67b5ba', border: '2px solid black' }}>Add internet cafe (+)</Link>
                     </div>
-                    <div style={{ height: '10px' }}/>
+                    <div style={{ height: '10px' }} />
                     <table className="table table-bordered">
                         <thead>
                             <tr>
-                                <td className="bg-dark text-white">ID</td>
-                                <td className="bg-dark text-white">Name</td>
-                                <td className="bg-dark text-white">Address</td>
-                                <td className="bg-dark text-white">Action</td>
+                                <td style={{ backgroundColor: '#67b5ba', color: 'white' }}>ID</td>
+                                <td style={{ backgroundColor: '#67b5ba', color: 'white' }}>Name</td>
+                                <td style={{ backgroundColor: '#67b5ba', color: 'white' }}>Address</td>
+                                <td style={{ backgroundColor: '#67b5ba', color: 'white' }}>Action</td>
                             </tr>
                         </thead>
                         <tbody>
@@ -84,9 +90,9 @@ function InternetCafes() {
                                         <td>{item.id}</td>
                                         <td>{item.name}</td>
                                         <td>{item.address}</td>
-                                        <td><a onClick={()=>{LoadEdit(item.id)}} className="btn btn-outline-primary">Edit</a>
-                                            <a onClick={()=>{Remove(item.id)}} className="btn btn-outline-danger">Remove</a>
-                                            <a onClick={()=>{Remove(item.id)}} className="btn btn-outline-dark">Info</a>
+                                        <td><a onClick={() => { LoadEdit(item.id) }} className="btn btn-outline-primary">Edit</a>
+                                            <a onClick={() => { handleOpenRemove(item) }} className="btn btn-outline-danger">Remove</a>
+                                            <a onClick={() => { handleOpenRemove(item) }} className="btn btn-outline-dark">Info</a>
                                         </td>
                                     </tr>
                                 ))
@@ -96,7 +102,23 @@ function InternetCafes() {
                     </table>
                 </div>
             </div>
+            <Dialog open={openRemoveModal} onClose={handleCloseRemove}>
+                <DialogTitle>Do you really want to remove this cafe?</DialogTitle>
+                <DialogContent>
+                    <h6>Name: {currentCafe.name}</h6>
+                    <h6>Address: {currentCafe.address}</h6>
+                </DialogContent>
+                <DialogActions style={{ justifyContent: 'center' }}>
+                    <Button onClick={handleRemoveCafe} color="primary">
+                        Remove Internet cafe
+                    </Button>
+                    <Button onClick={handleCloseRemove} color="primary">
+                        Cancel
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </div>
+
     );
 }
 
