@@ -1,9 +1,6 @@
 import axios from "axios";
 import { API_URL } from "../utils/constants";
 
-
-const TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiRGVpdmlkYXMiLCJqdGkiOiI2MzQyOWM3ZS1kMGFmLTQzN2EtODg1My04ZmIwNGVhYzIxMmEiLCJzdWIiOiJhMzY3ZjI5YS1jMjFmLTRkN2QtYWFiYi03Njc4ZjJiOTViNmEiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJSZWdpc3RlcmVkVXNlciIsImV4cCI6MTcwMjAyODgzMCwiaXNzIjoiRGVpdmlkYXNEIiwiYXVkIjoiVHJ1c3RlZENsaWVudCJ9.hpyZg3lcfb0-s8DY3DXmtAnkZEnPe_xSDG2FOXpGwGg"
-
 export const login = async(data) => {
     try {
       const response = await axios.post(`${API_URL}/login`, data, {

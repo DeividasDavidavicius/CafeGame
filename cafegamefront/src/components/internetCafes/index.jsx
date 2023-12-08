@@ -31,7 +31,8 @@ function InternetCafes() {
     useEffect(()=>{
         const getInternetCafesData = async () => {
             const result = await getInternetCafes();
-            setInternetCafesData(result);
+            const sortedResult = [...result].sort((a, b) => a.id - b.id);
+            setInternetCafesData(sortedResult);
         };
 
         getInternetCafesData();

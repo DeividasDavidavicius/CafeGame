@@ -8,6 +8,7 @@ import InfoInternetCafe from './components/internetCafes/info';
 import Login from './components/authentication/login';
 import Register2 from './components/authentication/register2';
 import Register from './components/authentication/register';
+import Header from './components/header';
 
 
 function App() {
@@ -28,8 +29,9 @@ function App() {
 
   return (
     <div className="App">
-      <h1>CafeGame</h1>
       <Router>
+        <Header/>
+        <div style={{ height: '40px' }}/>
         <Routes>
           <Route path='/login' element={<Login />}></Route>
           <Route path='/register' element={<Register />}></Route>
