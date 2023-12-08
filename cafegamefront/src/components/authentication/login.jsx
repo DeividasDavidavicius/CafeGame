@@ -63,7 +63,6 @@ function Login() {
                 console.log('Login failed:', errorMessage);
                 setErrorMessage(errorMessage);
             }
-            console.log(response.data);
         } catch (error) {
             console.error("Login failed:", error);
             setErrorMessage("Failed to login, try again!");

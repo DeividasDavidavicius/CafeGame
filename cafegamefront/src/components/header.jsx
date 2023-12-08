@@ -5,13 +5,15 @@ import RegisterIcon from '@mui/icons-material/PersonAdd';
 import LoginIcon from '@mui/icons-material/Login';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { useUser } from "../contexts/UserContext";
-import { useState } from "react";
-import { logout } from "../services/authentication";
+import { useContext, useState } from "react";
+import { checkTokenValidity, logout, refreshAccessToken } from "../services/authentication";
 import ImportantDevicesIcon from '@mui/icons-material/ImportantDevices';
+import SnackbarContext from "../contexts/SnackbarContext";
 
 function Header() {
-    const { isLoggedIn, role, accessToken, refreshToken, setLogout } = useUser();
+    const { isLoggedIn, role, accessToken, refreshToken, setLogin, setLogout } = useUser();
     const navigation = useNavigate();
+    const openSnackbar = useContext(SnackbarContext);
 
     const handleNavigation = (url) => {
         navigation(url);
@@ -24,7 +26,7 @@ function Header() {
 
         if (role.includes('Admin')) {
             navOptions.push(
-                { name: 'Manage restaurants', route: 'admin/restaurants' },
+                { name: 'Manage internet cafes', route: '/admin/internetCafes' },
                 { name: 'Manage tables', route: 'manage-tables' },
                 { name: 'Manage reservations', route: 'manage-reservations' }
             );
@@ -61,17 +63,30 @@ function Header() {
     }
 
     async function handleLogout() {
-        try {
-            await logout(accessToken);
-            setLogout();
-        } catch (error) {
-            console.log(error.message);
+        if (!checkTokenValidity(accessToken)) {
+            const result = await refreshAccessToken();
+            if (!result.success) {
+                setLogout();
+                navigation('/');
+                return;
+            }
+            setLogin(result.response.data.accessToken, result.response.data.refreshToken);
         }
+
+        try {
+            const response = await logout(localStorage.getItem('accessToken'));
+            if(response.status === 200)
+            {
+                setLogout(accessToken);
+                navigation('/login');
+                openSnackbar('Succesfully logged out!', 'success');
+            }
+          } catch { }
     }
 
 
     const pages = [
-        { name: 'Internet cafes', route: 'internetCafes/' }
+        { name: 'Internet cafes', route: 'admin/internetCafes/' }
     ];
 
     const imageClick = [
@@ -169,7 +184,7 @@ function Header() {
                             <>
                                 <Tooltip title="Open settings">
                                     <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                        <Avatar sx={{ m: 1, bgcolor: '#508d91' }}>
+                                        <Avatar sx={{ m: 1, bgcolor: '#1a4c4f' }}>
                                             <SettingsIcon />
                                         </Avatar>
                                     </IconButton>

@@ -36,10 +36,10 @@ function App() {
           <Route path='/login' element={<Login />}></Route>
           <Route path='/register' element={<Register />}></Route>
           <Route path='/register2' element={<Register2 />}></Route>
-          <Route path='/internetCafes' element={<InternetCafes />}></Route>
-          <Route path='/internetCafes/info/:internetCafeId' element={<InfoInternetCafe />}></Route>
-          <Route path='/internetCafes/create' element={<CreateInternetCafe></CreateInternetCafe>}></Route>
-          <Route path='/internetCafes/edit/:internetCafeId' element={<EditInternetCafe></EditInternetCafe>}></Route>
+          <Route path='/admin/internetCafes' element={<InternetCafes />}></Route>
+          <Route path='/admin/internetCafes/info/:internetCafeId' element={<InfoInternetCafe />}></Route>
+          <Route path='/admin/internetCafes/create' element={<CreateInternetCafe></CreateInternetCafe>}></Route>
+          <Route path='/admin/internetCafes/edit/:internetCafeId' element={<EditInternetCafe></EditInternetCafe>}></Route>
         </Routes>
       </Router>
     </div>

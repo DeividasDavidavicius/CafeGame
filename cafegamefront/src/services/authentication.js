@@ -1,5 +1,7 @@
 import axios from "axios";
 import { API_URL } from "../utils/constants";
+import { useUser } from "../contexts/UserContext";
+import { useNavigate } from "react-router-dom";
 
 export const login = async(data) => {
     try {
@@ -77,7 +79,6 @@ export function decodeJWT(token) {
 }
 
 export function checkTokenValidity(token) {
-  console.log("checking token validity");
   const payload = decodeJWT(token);
   if (!payload) return false;
 
@@ -85,3 +86,18 @@ export function checkTokenValidity(token) {
   return payload.exp > currentTimestamp;
 }
 
+export async function HandleLogout() {
+  const { setLogin, setLogout } = useUser();
+  const navigation = useNavigate();
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (!checkTokenValidity(accessToken)) {
+      const result = await refreshAccessToken();
+      if (!result.success) {
+          setLogout();
+          navigation('/');
+          return;
+      }
+      setLogin(result.response.data.accessToken, result.response.data.refreshToken);
+  }
+}

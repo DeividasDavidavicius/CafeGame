@@ -1,10 +1,15 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from 'react-router-dom';
 import { deleteInternetCafe, getInternetCafes } from "../../services/internetCafeService";
+import { checkTokenValidity, refreshAccessToken } from "../../services/authentication";
+import SnackbarContext from "../../contexts/SnackbarContext";
+import { useUser } from "../../contexts/UserContext";
 
 function InternetCafes() {
     const [internetCafesData, setInternetCafesData] = useState([]);
+    const openSnackbar = useContext(SnackbarContext);
     const navigate = useNavigate();
+    const { isLoggedIn, role, accessToken, refreshToken, setLogin, setLogout } = useUser();
 
     const LoadEdit = (id) => {
         navigate("edit/" + id)
@@ -16,7 +21,20 @@ function InternetCafes() {
         return foundCafe;
       };
 
-    const Remove = (id) => {
+    const Remove = async (id) => {
+        const accessToken = localStorage.getItem('accessToken');
+        if (!checkTokenValidity(accessToken)) {
+            const result = await refreshAccessToken();
+            if (!result.success) {
+                openSnackbar('You need to login!', 'error');
+                setLogout();
+                navigate('/login');
+                return;
+            }
+
+            setLogin(result.response.data.accessToken, result.response.data.refreshToken);
+        }
+
         if(window.confirm(`Do you want to remove '${findInternetCafeById(id).name}'?`))
         {
             deleteInternetCafe(id);
@@ -68,6 +86,7 @@ function InternetCafes() {
                                         <td>{item.address}</td>
                                         <td><a onClick={()=>{LoadEdit(item.id)}} className="btn btn-outline-primary">Edit</a>
                                             <a onClick={()=>{Remove(item.id)}} className="btn btn-outline-danger">Remove</a>
+                                            <a onClick={()=>{Remove(item.id)}} className="btn btn-outline-dark">Info</a>
                                         </td>
                                     </tr>
                                 ))

@@ -1,26 +1,42 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { getInternetCafe, putInternetCafe } from "../../services/internetCafeService";
+import { useUser } from "../../contexts/UserContext";
+import SnackbarContext from "../../contexts/SnackbarContext";
+import { checkTokenValidity, refreshAccessToken } from "../../services/authentication";
 
 function EditInternetCafe() {
-    const {internetCafeId} = useParams();
-    const [internetCafeData,  setInternetCafeData] = useState({});
+    const { internetCafeId } = useParams();
+    const [internetCafeData, setInternetCafeData] = useState({});
     const [name, setName] = useState("");
     const [address, setAddress] = useState("");
     const [validation, setValidation] = useState(false);
     const navigate = useNavigate();
+    const { isLoggedIn, role, accessToken, refreshToken, setLogin, setLogout } = useUser();
+    const openSnackbar = useContext(SnackbarContext);
 
+    useEffect(() => {
+        if (!role.includes("Admin")) {
+            openSnackbar('Only admins can edit internet cafes!', 'error');
+            navigate('/');
+        }
 
-    useEffect(()=>{
-        const getInternetCafesData = async () => {
-            const result = await getInternetCafe(internetCafeId);
-            setInternetCafeData(result);
+        const getInternetCafeData = async () => {
+            try{
+                const result = await getInternetCafe(internetCafeId);
+                setInternetCafeData(result);
 
-            setName(result.name);
-            setAddress(result.address);
+                setName(result.name);
+                setAddress(result.address);
+            }
+            catch
+            {
+                openSnackbar('This internet cafe does not exist!', 'error');
+                navigate('/');
+            }
         };
 
-        getInternetCafesData();
+        getInternetCafeData();
 
 
     }, []);
@@ -28,12 +44,26 @@ function EditInternetCafe() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const postData = {name, address};
+
+        const accessToken = localStorage.getItem('accessToken');
+        if (!checkTokenValidity(accessToken)) {
+            const result = await refreshAccessToken();
+            if (!result.success) {
+                openSnackbar('You need to login!', 'error');
+                setLogout();
+                navigate('/login');
+                return;
+            }
+
+            setLogin(result.response.data.accessToken, result.response.data.refreshToken);
+        }
+
+        const postData = { name, address };
         setValidation(true);
 
         await putInternetCafe(postData, internetCafeId);
 
-        navigate("/internetCafes");
+        navigate("/admin/internetCafes");
     }
 
     return (
@@ -50,7 +80,7 @@ function EditInternetCafe() {
                                     <div className="col-lg-12">
                                         <div className="form-group">
                                             <label>Name</label>
-                                            <input value={name} onMouseDown={e=>setValidation(true)} onChange={(e => setName(e.target.value))} required className="form-control"></input>
+                                            <input value={name} onMouseDown={e => setValidation(true)} onChange={(e => setName(e.target.value))} required className="form-control"></input>
                                             {name.length == 0 && validation && <span className="text-danger">Enter the name</span>}
                                         </div>
                                     </div>
@@ -58,14 +88,14 @@ function EditInternetCafe() {
                                     <div className="col-lg-12">
                                         <div className="form-group">
                                             <label>Address</label>
-                                            <input value={address} onMouseDown={e=>setValidation(true)} onChange={(e => setAddress(e.target.value))} required className="form-control"></input>
+                                            <input value={address} onMouseDown={e => setValidation(true)} onChange={(e => setAddress(e.target.value))} required className="form-control"></input>
                                             {address.length == 0 && validation && <span className="text-danger">Enter the address</span>}
                                         </div>
                                     </div>
                                     <div className="col-lg-12">
                                         <div className="form-group">
                                             <button className="btn btn-success" type="submit">Save</button>
-                                            <Link to="/internetCafes" className="btn btn-danger">Back</Link>
+                                            <Link to="/admin/internetCafes" className="btn btn-danger">Back</Link>
                                         </div>
                                     </div>
                                 </div>

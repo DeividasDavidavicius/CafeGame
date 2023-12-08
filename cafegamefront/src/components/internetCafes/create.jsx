@@ -1,20 +1,46 @@
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { postInternetCafe } from '../../services/internetCafeService';
+import { checkTokenValidity, refreshAccessToken } from '../../services/authentication';
+import { useUser } from '../../contexts/UserContext';
+import SnackbarContext from '../../contexts/SnackbarContext';
 
 function CreateInternetCafe() {
     const [name, setName] = useState("");
     const [address, setAddress] = useState("");
     const navigate = useNavigate();
+    const { isLoggedIn, role, accessToken, refreshToken, setLogin, setLogout } = useUser();
+    const openSnackbar = useContext(SnackbarContext);
+
+    useEffect(() => {
+        if (!role.includes("Admin")) {
+            openSnackbar('Only admins can edit internet cafes!', 'error');
+            navigate('/');
+        }
+    }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        const accessToken = localStorage.getItem('accessToken');
+        if (!checkTokenValidity(accessToken)) {
+            const result = await refreshAccessToken();
+            if (!result.success) {
+                openSnackbar('You need to login!', 'error');
+                setLogout();
+                navigate('/login');
+                return;
+            }
+
+            setLogin(result.response.data.accessToken, result.response.data.refreshToken);
+        }
+
         const postData = {name, address};
 
         await postInternetCafe(postData);
 
-        navigate("/internetCafes");
+        navigate("/admin/internetCafes");
     }
 
     return (
@@ -46,7 +72,7 @@ function CreateInternetCafe() {
                                     <div className="col-lg-12">
                                         <div className="form-group">
                                             <button className="btn btn-success" type="submit">Save</button>
-                                            <Link to="/internetCafes" className="btn btn-danger">Back</Link>
+                                            <Link to="/admin/internetCafes" className="btn btn-danger">Back</Link>
                                         </div>
                                     </div>
                                 </div>
