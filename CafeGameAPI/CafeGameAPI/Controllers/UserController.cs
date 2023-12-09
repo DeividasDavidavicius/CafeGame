@@ -14,12 +14,10 @@ namespace CafeGameAPI.Controllers
     public class UserController : ControllerBase
     {
         private readonly IReservationsRepository _reservationsRepository;
-        private readonly IAuthorizationService _authorizationService;
 
-        public UserController(IReservationsRepository reservationsRepository, IAuthorizationService authorizationService)
+        public UserController(IReservationsRepository reservationsRepository)
         {
             _reservationsRepository = reservationsRepository;
-            _authorizationService = authorizationService;
         }
 
         [HttpGet]

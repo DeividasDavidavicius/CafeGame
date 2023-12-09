@@ -4,7 +4,7 @@ import SnackbarContext from "../../contexts/SnackbarContext";
 import { useUser } from "../../contexts/UserContext";
 import { getInternetCafe } from "../../services/internetCafeService";
 import { getComputer } from "../../services/computersService";
-import { deleteReservation, getReservations } from "../../services/reservationService";
+import { deleteReservation, getReservations, getUserReservations } from "../../services/reservationService";
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
 import { checkTokenValidity, refreshAccessToken } from "../../services/authentication";
 
@@ -66,47 +66,32 @@ function UserReservations()
     }
 
     useEffect(() => {
+        console.log("LOG");
         if (!role.includes("Admin")) {
             openSnackbar('Only admins can see admin menu!', 'error');
             navigate('/');
         }
 
-        const getInternetCafeData = async () => {
-            try{
-                const result = await getInternetCafe(internetCafeId);
-                setCurrentInternetCafe(result);
-
-                getComputerData();
-            }
-            catch
-            {
-                openSnackbar('This internet cafe does not exist!', 'error');
-                navigate('/');
-            }
-        };
-
-        const getComputerData = async () => {
-            try
-            {
-                const result = await getComputer(internetCafeId, computerId);
-                setCurrentComputer(result);
-
-                getReservationsData();
-            }
-            catch
-            {
-                openSnackbar('This computer does not exist!', 'error');
-                navigate('/');
-            };
-        };
-
         const getReservationsData = async () => {
-            const result = await getReservations(internetCafeId, computerId);
+            const accessToken = localStorage.getItem('accessToken');
+            if (!checkTokenValidity(accessToken)) {
+                const result = await refreshAccessToken();
+                if (!result.success) {
+                    openSnackbar('You need to login!', 'error');
+                    setLogout();
+                    navigate('/login');
+                    return;
+                }
+
+                setLogin(result.response.data.accessToken, result.response.data.refreshToken);
+            }
+
+            const result = await getUserReservations(internetCafeId, computerId);
             const sortedResult = [...result].sort((a, b) => a.id - b.id);
             setReservationsData(sortedResult);
         };
 
-        getInternetCafeData();
+        getReservationsData();
 
     }, []);
 

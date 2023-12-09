@@ -21,6 +21,20 @@ export const getReservation = async (internetCafeId, computerId, reservationId) 
     }
   };
 
+  export const getUserReservations = async () => {
+    try {
+      const accessToken = localStorage.getItem('accessToken');
+      await axios.get(`${API_URL}/user/reservations`, {
+        headers: {
+          "Authorization": `Bearer ${accessToken}`
+        }
+      })
+    } catch (error) {
+      console.error("Error posting reservation", error);
+      throw error;
+    }
+  };
+
   export const postReservation = async (data, internetCafeId, computerId) => {
     try {
       const accessToken = localStorage.getItem('accessToken');
