@@ -4,8 +4,9 @@ import SnackbarContext from "../../contexts/SnackbarContext";
 import { useUser } from "../../contexts/UserContext";
 import { getInternetCafe } from "../../services/internetCafeService";
 import { getComputer } from "../../services/computersService";
-import { getReservations } from "../../services/reservationService";
+import { deleteReservation, getReservations } from "../../services/reservationService";
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
+import { checkTokenValidity, refreshAccessToken } from "../../services/authentication";
 
 function Reservations()
 {
@@ -35,6 +36,27 @@ function Reservations()
     };
 
     const handleRemoveReservation = async () => {
+        const accessToken = localStorage.getItem('accessToken');
+        if (!checkTokenValidity(accessToken)) {
+            const result = await refreshAccessToken();
+            if (!result.success) {
+                openSnackbar('You need to login!', 'error');
+                setLogout();
+                navigate('/login');
+                return;
+            }
+
+            setLogin(result.response.data.accessToken, result.response.data.refreshToken);
+        }
+
+        deleteReservation(internetCafeId, computerId, currentReservation.id);
+        openSnackbar('Reservation deleted successfully!', 'success');
+
+        const updatedReservations = reservationsData.filter(
+            (reservation) => reservation.id !== currentReservation.id
+        );
+        setReservationsData(updatedReservations);
+        handleCloseRemove();
     }
 
     const formatDate = (date) => {
@@ -134,17 +156,14 @@ function Reservations()
                 </div>
             </div>
             <Dialog open={openRemoveModal} onClose={handleCloseRemove}>
-                <DialogTitle>Do you really want to remove this computer?</DialogTitle>
+                <DialogTitle>Do you really want to remove '{currentReservation.name}' reservation?</DialogTitle>
                 <DialogContent>
-                    <h6>RAM: {currentComputer.ram}</h6>
-                    <h6>CPU: {currentComputer.cpu}</h6>
-                    <h6>GPU: {currentComputer.gpu}</h6>
-                    <h6>Monitor resolution: {currentComputer.monitorResolution}</h6>
-                    <h6>Monitor refresh rate: {currentComputer.monitorRefreshRate}</h6>
+                    <h6>Start date: {formatDate(currentReservation.start)}</h6>
+                    <h6>End date: {formatDate(currentReservation.end)}</h6>
                 </DialogContent>
                 <DialogActions style={{ justifyContent: 'center' }}>
                     <Button onClick={handleRemoveReservation} color="primary">
-                        Remove Internet cafe
+                        Remove reservation
                     </Button>
                     <Button onClick={handleCloseRemove} color="primary">
                         Cancel

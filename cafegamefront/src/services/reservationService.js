@@ -35,3 +35,18 @@ export const getReservation = async (internetCafeId, computerId, reservationId) 
       throw error;
     }
   };
+
+  export const deleteReservation = async (internetCafeId, computerId, reservationId) => {
+    try {
+      const accessToken = localStorage.getItem('accessToken');
+      await axios.delete(`${API_URL}/internetCafes/${internetCafeId}/computers/${computerId}/reservations/${reservationId}`, {
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${accessToken}`
+        }
+      })
+    } catch (error) {
+      console.error("Error posting internet cafe", error);
+      throw error;
+    }
+  };

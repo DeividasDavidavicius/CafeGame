@@ -150,7 +150,7 @@ function Computers() {
                 </DialogContent>
                 <DialogActions style={{ justifyContent: 'center' }}>
                     <Button onClick={handleRemoveComputer} color="primary">
-                        Remove Internet cafe
+                        Remove computer
                     </Button>
                     <Button onClick={handleCloseRemove} color="primary">
                         Cancel
