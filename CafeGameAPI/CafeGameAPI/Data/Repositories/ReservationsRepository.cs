@@ -9,6 +9,7 @@ namespace CafeGameAPI.Data.Repositories
         Task DeleteAsync(Reservation reservation);
         Task<Reservation?> GetAsync(int computerId, int reservationId);
         Task<IReadOnlyList<Reservation>> GetManyAsync(int computerId);
+        Task<IReadOnlyList<Reservation>> GetUserAsync(string UserId);
         Task UpdateAsync(Reservation reservation);
     }
 
@@ -34,6 +35,11 @@ namespace CafeGameAPI.Data.Repositories
         public async Task<IReadOnlyList<Reservation>> GetManyAsync(int computerId)
         {
             return await _cafeGameDbContext.Reservations.Where(reservation => reservation.Computer.Id == computerId).ToListAsync();
+        }
+
+        public async Task<IReadOnlyList<Reservation>> GetUserAsync(string UserId)
+        {
+            return await _cafeGameDbContext.Reservations.Where(reservation => reservation.UserId == UserId).ToListAsync();
         }
 
         public async Task UpdateAsync(Reservation reservation)

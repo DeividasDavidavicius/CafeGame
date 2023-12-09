@@ -126,28 +126,12 @@ namespace CafeGameAPI.Controllers
         [HttpGet]
         [Authorize(Roles = UserRoles.RegisteredUser)]
         [Route("user")]
-        public async Task<ActionResult<IEnumerable<ReservationDto>>> GetManyUser(int internetCafeId, int computerId)
+        public async Task<ActionResult<IEnumerable<ReservationDto>>> GetManyUser()
         {
-            var internetCafe = await _internetCafesRepository.GetAsync(internetCafeId);
-
-            if (internetCafe == null)
-            {
-                return NotFound();
-            }
-
-            var computer = await _computersRepository.GetAsync(internetCafeId, computerId);
-
-            if (computer == null)
-            {
-                return NotFound();
-            }
-
-            var reservations = await _reservationsRepository.GetManyAsync(computerId);
-
             var UserId = User.FindFirstValue(JwtRegisteredClaimNames.Sub);
-            var userReservations = reservations.Where(reservation => reservation.UserId == UserId);
+            var reservations = await _reservationsRepository.GetUserAsync(UserId);
 
-            return Ok(userReservations.Select(reservation => new ReservationDto(reservation.Id, reservation.Name, reservation.Start, reservation.End, reservation.UserId)));
+            return Ok(reservations.Select(reservation => new FullReservationDto(reservation.Id, reservation.Name, reservation.Start, reservation.End, reservation.UserId, reservation.Computer.Id, reservation.Computer.InternetCafe.Id)));
         }
 
         [HttpPatch]

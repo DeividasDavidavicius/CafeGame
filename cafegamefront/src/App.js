@@ -16,7 +16,7 @@ import EditComputer from './components/computers/edit';
 import Reservations from './components/reservations';
 import EditReservation from './components/reservations/edit';
 import CreateReservation from './components/reservations/create';
-
+import UserReservations from './components/reservations/userReservations';
 
 function App() {
   useEffect(() => {
@@ -42,6 +42,7 @@ function App() {
         <Routes>
           <Route path='/login' element={<Login />}></Route>
           <Route path='/register' element={<Register />}></Route>
+          <Route path='/user/reservations' element={<UserReservations />}></Route>
           <Route path='/register2' element={<Register2 />}></Route>
           <Route path='/internetCafes' element={<InternetCafesList />}></Route>
           <Route path='/internetCafes/:internetCafeId/computers' element={<ComputersList/>}></Route>
