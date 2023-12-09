@@ -8,6 +8,7 @@ import { checkTokenValidity, refreshAccessToken } from "../../services/authentic
 function EditInternetCafe() {
     const { internetCafeId } = useParams();
     const [name, setName] = useState("");
+    const [nameStatic, setNameStatic] = useState("");
     const [address, setAddress] = useState("");
     const [validation, setValidation] = useState(false);
     const navigate = useNavigate();
@@ -24,6 +25,7 @@ function EditInternetCafe() {
             try{
                 const result = await getInternetCafe(internetCafeId);
                 setName(result.name);
+                setNameStatic(result.name);
                 setAddress(result.address);
             }
             catch
@@ -68,7 +70,7 @@ function EditInternetCafe() {
                     <form className="container" onSubmit={handleSubmit}>
                         <div className="card">
                             <div className="card-title">
-                                <h2>Edit internet cafe {name}</h2>
+                                <h2>Edit internet cafe {nameStatic}</h2>
                             </div>
                             <div className="card-body">
                                 <div className="row">
