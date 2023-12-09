@@ -15,7 +15,7 @@ function CreateInternetCafe() {
 
     useEffect(() => {
         if (!role.includes("Admin")) {
-            openSnackbar('Only admins can edit internet cafes!', 'error');
+            openSnackbar('Only admins can add internet cafes!', 'error');
             navigate('/');
         }
     }, []);
@@ -40,6 +40,7 @@ function CreateInternetCafe() {
 
         await postInternetCafe(postData);
 
+        openSnackbar('Internet cafe created successfully!', 'success');
         navigate("/admin/internetCafes");
     }
 

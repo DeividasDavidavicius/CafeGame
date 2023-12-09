@@ -13,7 +13,7 @@ function InternetCafes() {
     const [currentCafe, setCurrentCafe] = useState({});
     const openSnackbar = useContext(SnackbarContext);
     const navigate = useNavigate();
-    const { setLogin, setLogout } = useUser();
+    const { role, setLogin, setLogout } = useUser();
 
     const LoadEdit = (id) => {
         navigate("edit/" + id)
@@ -48,15 +48,22 @@ function InternetCafes() {
         }
 
         deleteInternetCafe(currentCafe.id);
+        openSnackbar('Internet cafe deleted successfully!', 'success');
 
         const updatedInternetCafes = internetCafesData.filter(
             (internetCafe) => internetCafe.id !== currentCafe.id
         );
         setInternetCafesData(updatedInternetCafes);
+        handleCloseRemove();
     }
 
 
     useEffect(() => {
+        if (!role.includes("Admin")) {
+            openSnackbar('Only admins can see admin menu!', 'error');
+            navigate('/');
+        }
+
         const getInternetCafesData = async () => {
             const result = await getInternetCafes();
             const sortedResult = [...result].sort((a, b) => a.id - b.id);
@@ -111,7 +118,7 @@ function InternetCafes() {
                     <h6>Name: {currentCafe.name}</h6>
                     <h6>Address: {currentCafe.address}</h6>
                 </DialogContent>
-                <DialogActions style={{ justifyContent: 'center' }}>
+                <DialogActions style={{ justifyContent: 'right' }}>
                     <Button onClick={handleRemoveCafe} color="primary">
                         Remove Internet cafe
                     </Button>

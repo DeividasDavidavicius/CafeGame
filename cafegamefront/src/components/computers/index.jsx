@@ -3,8 +3,9 @@ import { useUser } from "../../contexts/UserContext";
 import SnackbarContext from "../../contexts/SnackbarContext";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
-import { getComputers } from "../../services/computersService";
+import { deleteComputer, getComputers } from "../../services/computersService";
 import { getInternetCafe } from "../../services/internetCafeService";
+import { checkTokenValidity, refreshAccessToken } from "../../services/authentication";
 
 function Computers() {
     const [computersData, setComputersData] = useState([]);
@@ -15,7 +16,7 @@ function Computers() {
 
     const openSnackbar = useContext(SnackbarContext);
     const navigate = useNavigate();
-    const { setLogin, setLogout } = useUser();
+    const { role, setLogin, setLogout } = useUser();
 
     const LoadEdit = (id) => {
         navigate("edit/" + id)
@@ -36,9 +37,35 @@ function Computers() {
     };
 
     const handleRemoveComputer = async () => {
+        const accessToken = localStorage.getItem('accessToken');
+        if (!checkTokenValidity(accessToken)) {
+            const result = await refreshAccessToken();
+            if (!result.success) {
+                openSnackbar('You need to login!', 'error');
+                setLogout();
+                navigate('/login');
+                return;
+            }
+
+            setLogin(result.response.data.accessToken, result.response.data.refreshToken);
+        }
+
+        deleteComputer(internetCafeId, currentComputer.id);
+        openSnackbar('Computer deleted successfully!', 'success');
+
+        const updatedComputers = computersData.filter(
+            (computer) => computer.id !== currentComputer.id
+        );
+        setComputersData(updatedComputers);
+        handleCloseRemove();
     }
 
     useEffect(() => {
+        if (!role.includes("Admin")) {
+            openSnackbar('Only admins can see admin menu!', 'error');
+            navigate('/');
+        }
+
         const getInternetCafeData = async () => {
             try{
                 const result = await getInternetCafe(internetCafeId);
@@ -69,8 +96,13 @@ function Computers() {
                     <h2>'{currentInternetCafe.name}' computer list</h2>
                 </div>
                 <div className="card-body">
+                    <div>
                     <div className="divbtn">
-                        <Link to="create" className="btn btn-outline-dark" style={{ fontWeight: 'bold', color: '#67b5ba', border: '2px solid black' }}>Add internet cafe (+)</Link>
+                        <Link to="create" className="btn btn-outline-dark" style={{ fontWeight: 'bold', color: '#67b5ba', border: '2px solid black' }}>Add computer (+)</Link>
+                    </div>
+                    <div className="divbtn2">
+                        <Link to="/admin/internetCafes" className="btn btn-outline-dark" style={{ fontWeight: 'bold', color: '#67b5ba', border: '2px solid black' }}>Back</Link>
+                    </div>
                     </div>
                     <div style={{ height: '10px' }} />
                     <table className="table table-bordered">
@@ -108,10 +140,13 @@ function Computers() {
                 </div>
             </div>
             <Dialog open={openRemoveModal} onClose={handleCloseRemove}>
-                <DialogTitle>Do you really want to remove this cafe?</DialogTitle>
+                <DialogTitle>Do you really want to remove this computer?</DialogTitle>
                 <DialogContent>
-                    <h6>Name: {currentComputer.name}</h6>
-                    <h6>Address: {currentComputer.address}</h6>
+                    <h6>RAM: {currentComputer.ram}</h6>
+                    <h6>CPU: {currentComputer.cpu}</h6>
+                    <h6>GPU: {currentComputer.gpu}</h6>
+                    <h6>Monitor resolution: {currentComputer.monitorResolution}</h6>
+                    <h6>Monitor refresh rate: {currentComputer.monitorRefreshRate}</h6>
                 </DialogContent>
                 <DialogActions style={{ justifyContent: 'center' }}>
                     <Button onClick={handleRemoveComputer} color="primary">

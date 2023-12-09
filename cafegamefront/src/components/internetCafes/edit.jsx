@@ -57,6 +57,7 @@ function EditInternetCafe() {
 
         await putInternetCafe(postData, internetCafeId);
 
+        openSnackbar('Internet cafe edited successfully!', 'success');
         navigate("/admin/internetCafes");
     }
 

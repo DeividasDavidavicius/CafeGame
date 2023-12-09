@@ -4,7 +4,6 @@ import React, { useEffect } from 'react';
 import './App.css';
 import CreateInternetCafe from './components/internetCafes/create';
 import EditInternetCafe from './components/internetCafes/edit';
-import InfoInternetCafe from './components/internetCafes/info';
 import Login from './components/authentication/login';
 import Register2 from './components/authentication/register2';
 import Register from './components/authentication/register';
@@ -13,6 +12,7 @@ import InternetCafesList from './components/internetCafes/userIndex';
 import ComputersList from './components/computers/userIndex';
 import CreateComputer from './components/computers/create';
 import Computers from './components/computers';
+import EditComputer from './components/computers/edit';
 
 
 function App() {
@@ -47,6 +47,7 @@ function App() {
           <Route path='/admin/internetCafes/edit/:internetCafeId' element={<EditInternetCafe/>}></Route>
           <Route path='/admin/internetCafes/:internetCafeId/computers' element={<Computers/>}></Route>
           <Route path='/admin/internetCafes/:internetCafeId/computers/create' element={<CreateComputer/>}></Route>
+          <Route path='/admin/internetCafes/:internetCafeId/computers/edit/:computerId' element={<EditComputer/>}></Route>
         </Routes>
       </Router>
     </div>
