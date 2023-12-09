@@ -46,9 +46,16 @@ const UserContextProvider = ({ children }) => {
         localStorage.removeItem('refreshToken');
     }, []);
 
+    const getUserId = () =>
+    {
+        const payload = decodeJWT(localStorage.getItem('accessToken'));
+        const userId = payload.sub;
+        return userId;
+    }
+
 
     return (
-        <UserContext.Provider value={{ isLoggedIn, role, accessToken, refreshToken, decodeJWT, setLogin, setLogout }}>
+        <UserContext.Provider value={{ isLoggedIn, role, accessToken, refreshToken, decodeJWT, setLogin, setLogout, getUserId }}>
             {children}
         </UserContext.Provider>
     );

@@ -8,8 +8,7 @@ import { deleteReservation, getReservations, getUserReservations } from "../../s
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
 import { checkTokenValidity, refreshAccessToken } from "../../services/authentication";
 
-function UserReservations()
-{
+function UserReservations() {
     const [reservationsData, setReservationsData] = useState([]);
     const [currentInternetCafe, setCurrentInternetCafe] = useState({});
     const [currentComputer, setCurrentComputer] = useState({});
@@ -19,10 +18,10 @@ function UserReservations()
 
     const openSnackbar = useContext(SnackbarContext);
     const navigate = useNavigate();
-    const { role, setLogin, setLogout } = useUser();
+    const { role, setLogin, setLogout, getUserId } = useUser();
 
-    const LoadEdit = (id) => {
-        navigate("edit/" + id)
+    const LoadEdit = (internetCafeId, computerId, reservationId) => {
+        navigate(`/internetCafes/${internetCafeId}/computers/${computerId}/reservations/edit/${reservationId}`)
     }
 
     const handleOpenRemove = (reservation) => {
@@ -49,7 +48,7 @@ function UserReservations()
             setLogin(result.response.data.accessToken, result.response.data.refreshToken);
         }
 
-        deleteReservation(internetCafeId, computerId, currentReservation.id);
+        deleteReservation(currentReservation.internetCafeId, currentReservation.computerId, currentReservation.id);
         openSnackbar('Reservation deleted successfully!', 'success');
 
         const updatedReservations = reservationsData.filter(
@@ -66,9 +65,8 @@ function UserReservations()
     }
 
     useEffect(() => {
-        console.log("LOG");
-        if (!role.includes("Admin")) {
-            openSnackbar('Only admins can see admin menu!', 'error');
+        if (!role.includes("RegisteredUser")) {
+            openSnackbar('Only registered users can access their reservations!', 'error');
             navigate('/');
         }
 
@@ -86,9 +84,14 @@ function UserReservations()
                 setLogin(result.response.data.accessToken, result.response.data.refreshToken);
             }
 
-            const result = await getUserReservations(internetCafeId, computerId);
-            const sortedResult = [...result].sort((a, b) => a.id - b.id);
-            setReservationsData(sortedResult);
+            const result = await getUserReservations();
+            if (!result) {
+                setReservationsData([])
+            }
+            else {
+                const sortedResult = [...result].sort((a, b) => a.id - b.id);
+                setReservationsData(sortedResult);
+            }
         };
 
         getReservationsData();
@@ -99,46 +102,41 @@ function UserReservations()
         <div className="container">
             <div className="card">
                 <div className="card-title">
-                    <h2>'{currentInternetCafe.name}' computer '{computerId}' reservations</h2>
+                    <h2>My reservations</h2>
                 </div>
-                <div className="card-body">
-                    <div>
-                    <div className="divbtn">
-                        <Link to="create" className="btn btn-outline-dark" style={{ fontWeight: 'bold', color: '#67b5ba', border: '2px solid black' }}>Add reservation (+)</Link>
-                    </div>
-                    <div className="divbtn2">
-                        <Link to={`/admin/internetCafes/${internetCafeId}/computers`} className="btn btn-outline-dark" style={{ fontWeight: 'bold', color: '#67b5ba', border: '2px solid black' }}>Back</Link>
-                    </div>
-                    </div>
-                    <div style={{ height: '10px' }} />
-                    <table className="table table-bordered">
-                        <thead>
-                            <tr>
-                                <td style={{ backgroundColor: '#67b5ba', color: 'white' }}>ID</td>
-                                <td style={{ backgroundColor: '#67b5ba', color: 'white' }}>Name</td>
-                                <td style={{ backgroundColor: '#67b5ba', color: 'white' }}>Start</td>
-                                <td style={{ backgroundColor: '#67b5ba', color: 'white' }}>End</td>
-                                <td style={{ backgroundColor: '#67b5ba', color: 'white' }}>Action</td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {
-                                reservationsData.map(item => (
-                                    <tr key={item.id}>
-                                        <td>{item.id}</td>
-                                        <td>{item.name}</td>
-                                        <td>{ formatDate(item.start) }</td>
-                                        <td>{ formatDate(item.end) }</td>
-                                        <td><a onClick={() => { LoadEdit(item.id) }} className="btn btn-outline-primary">Edit</a>
-                                            <a onClick={() => { handleOpenRemove(item) }} className="btn btn-outline-danger">Remove</a>
-                                        </td>
-                                    </tr>
-                                ))
-                            }
-
-                        </tbody>
-                    </table>
-                </div>
+                {reservationsData.length > 0 &&
+                    <div className="card-body">
+                        <div style={{ height: '10px' }} />
+                        <table className="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <td style={{ backgroundColor: '#67b5ba', color: 'white' }}>ID</td>
+                                    <td style={{ backgroundColor: '#67b5ba', color: 'white' }}>Name</td>
+                                    <td style={{ backgroundColor: '#67b5ba', color: 'white' }}>Start</td>
+                                    <td style={{ backgroundColor: '#67b5ba', color: 'white' }}>End</td>
+                                    <td style={{ backgroundColor: '#67b5ba', color: 'white' }}>Action</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {
+                                    reservationsData.map(item => (
+                                        <tr key={item.id}>
+                                            <td>{item.id}</td>
+                                            <td>{item.name}</td>
+                                            <td>{formatDate(item.start)}</td>
+                                            <td>{formatDate(item.end)}</td>
+                                            <td><a onClick={() => { LoadEdit(item.internetCafeId, item.computerId, item.id) }} className="btn btn-outline-primary">Edit</a>
+                                                <a onClick={() => { handleOpenRemove(item) }} className="btn btn-outline-danger">Remove</a>
+                                            </td>
+                                        </tr>
+                                    ))
+                                }
+                            </tbody>
+                        </table>
+                    </div>}
+                {reservationsData.length == 0 && <div className="card-title">
+                    <h5>You have no reservations</h5>
+                </div>}
             </div>
             <Dialog open={openRemoveModal} onClose={handleCloseRemove}>
                 <DialogTitle>Do you really want to remove '{currentReservation.name}' reservation?</DialogTitle>
