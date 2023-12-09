@@ -1,6 +1,5 @@
 ﻿using CafeGameAPI.Auth.Models;
 using CafeGameAPI.Data.Dtos;
-using CafeGameAPI.Data.Entities;
 using CafeGameAPI.Data.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -13,17 +12,23 @@ namespace CafeGameAPI.Controllers
     [Route("api/v1/user/reservations")]
     public class UserController : ControllerBase
     {
+        private readonly IInternetCafesRepository _internetCafesRepository;
+        private readonly IComputersRepository _computersRepository;
         private readonly IReservationsRepository _reservationsRepository;
 
-        public UserController(IReservationsRepository reservationsRepository)
+
+        public UserController(IInternetCafesRepository internetCafesRepository, IComputersRepository computersRepository, IReservationsRepository reservationsRepository)
         {
+            _internetCafesRepository = internetCafesRepository;
+            _computersRepository = computersRepository;
             _reservationsRepository = reservationsRepository;
         }
 
         [HttpGet]
         [Authorize(Roles = UserRoles.RegisteredUser)]
-        public async Task<ActionResult<IEnumerable<ReservationDto>>> GetManyUser()
+        public async Task<ActionResult<IEnumerable<FullReservationDto>>> GetMany()
         {
+            Console.WriteLine("ttt");
             var UserId = User.FindFirstValue(JwtRegisteredClaimNames.Sub);
             var reservations = await _reservationsRepository.GetUserAsync(UserId);
 

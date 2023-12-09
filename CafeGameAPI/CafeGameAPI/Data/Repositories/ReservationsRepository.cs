@@ -39,7 +39,7 @@ namespace CafeGameAPI.Data.Repositories
 
         public async Task<IReadOnlyList<Reservation>> GetUserAsync(string UserId)
         {
-            return await _cafeGameDbContext.Reservations.Where(reservation => reservation.UserId == UserId).ToListAsync();
+            return await _cafeGameDbContext.Reservations.Where(reservation => reservation.UserId == UserId).Include(r => r.User).Include(r => r.Computer).Include(r => r.Computer.InternetCafe).ToListAsync();
         }
 
         public async Task UpdateAsync(Reservation reservation)
