@@ -6,7 +6,7 @@ export const getComputers = async (internetCafeId) => {
     const response = await axios.get(`${API_URL}/internetCafes/${internetCafeId}/computers`);
     return response.data;
   } catch (error) {
-    console.error('Error fetching internet cafes:', error);
+    console.error('Error getting computers:', error);
     throw error;
   }
 };
@@ -16,7 +16,7 @@ export const getComputer = async (internetCafeId, computerId) => {
     const response = await axios.get(`${API_URL}/internetCafes/${internetCafeId}/computers/${computerId}`);
     return response.data;
   } catch (error) {
-    console.error('Error fetching internet cafes:', error);
+    console.error('Error getting computer', error);
     throw error;
   }
 };
@@ -31,7 +31,7 @@ export const postComputer = async (data, internetCafeId) => {
       }
     })
   } catch (error) {
-    console.error("Error posting internet cafe", error);
+    console.error("Error posting computer", error);
     throw error;
   }
 };
@@ -46,7 +46,7 @@ export const putComputer = async (data, internetCafeId, computerId) => {
       }
     })
   } catch (error) {
-    console.error("Error posting internet cafe", error);
+    console.error("Error putting computer", error);
     throw error;
   }
 };
@@ -61,7 +61,7 @@ export const deleteComputer = async (internetCafeId, computerId) => {
       }
     })
   } catch (error) {
-    console.error("Error posting internet cafe", error);
+    console.error("Error deleting computer", error);
     throw error;
   }
 };

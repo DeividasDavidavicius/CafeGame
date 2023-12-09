@@ -6,7 +6,7 @@ export const getInternetCafes = async () => {
     const response = await axios.get(`${API_URL}/internetCafes`);
     return response.data;
   } catch (error) {
-    console.error('Error fetching internet cafes:', error);
+    console.error('Error getting internet cafes:', error);
     throw error;
   }
 };
@@ -16,7 +16,7 @@ export const getInternetCafe = async (id) => {
     const response = await axios.get(`${API_URL}/internetCafes/${id}`);
     return response.data;
   } catch (error) {
-    console.error('Error fetching internet cafes:', error);
+    console.error('Error getting internet cafe:', error);
     throw error;
   }
 };
@@ -46,7 +46,7 @@ export const putInternetCafe = async (data, id) => {
       }
     })
   } catch (error) {
-    console.error("Error posting internet cafe", error);
+    console.error("Error putting internet cafe", error);
     throw error;
   }
 };
@@ -61,7 +61,7 @@ export const deleteInternetCafe = async (id) => {
       }
     })
   } catch (error) {
-    console.error("Error posting internet cafe", error);
+    console.error("Error deleting internet cafe", error);
     throw error;
   }
 };

@@ -46,7 +46,7 @@ namespace CafeGameAPI.Controllers
 
             if(createReservationDto.Start >= createReservationDto.End)
             {
-                var errorResponse = new { ErrorMessage = "Reservation Start date must be older than End date" };
+                var errorResponse = new { ErrorMessage = "Reservation Start date must be older than End date" + createReservationDto.Start + " " + createReservationDto.End };
                 return UnprocessableEntity(errorResponse);
             }
 

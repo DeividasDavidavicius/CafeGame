@@ -6,7 +6,7 @@ export const getReservations = async (internetCafeId, computerId) => {
     const response = await axios.get(`${API_URL}/internetCafes/${internetCafeId}/computers/${computerId}/reservations`);
     return response.data;
   } catch (error) {
-    console.error('Error fetching internet cafes:', error);
+    console.error('Error getting reservations:', error);
     throw error;
   }
 };
@@ -16,7 +16,22 @@ export const getReservation = async (internetCafeId, computerId, reservationId) 
       const response = await axios.get(`${API_URL}/internetCafes/${internetCafeId}/computers/${computerId}/reservations/${reservationId}`);
       return response.data;
     } catch (error) {
-      console.error('Error fetching internet cafes:', error);
+      console.error('Error getting reservation', error);
+      throw error;
+    }
+  };
+
+  export const postReservation = async (data, internetCafeId, computerId) => {
+    try {
+      const accessToken = localStorage.getItem('accessToken');
+      await axios.post(`${API_URL}/internetCafes/${internetCafeId}/computers/${computerId}/reservations`, data, {
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${accessToken}`
+        }
+      })
+    } catch (error) {
+      console.error("Error posting reservation", error);
       throw error;
     }
   };
@@ -31,7 +46,7 @@ export const getReservation = async (internetCafeId, computerId, reservationId) 
         }
       })
     } catch (error) {
-      console.error("Error posting internet cafe", error);
+      console.error("Error patching reservation", error);
       throw error;
     }
   };
@@ -46,7 +61,7 @@ export const getReservation = async (internetCafeId, computerId, reservationId) 
         }
       })
     } catch (error) {
-      console.error("Error posting internet cafe", error);
+      console.error("Error deleting reservation", error);
       throw error;
     }
   };
