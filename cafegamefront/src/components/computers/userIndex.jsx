@@ -3,7 +3,7 @@ import { getInternetCafe } from "../../services/internetCafeService";
 import { useContext, useEffect, useState } from "react";
 import SnackbarContext from "../../contexts/SnackbarContext";
 import { getComputers } from "../../services/computersService";
-import { Card, CardContent, Grid, Typography } from "@mui/material";
+import { Button, Card, CardContent, Grid, Typography } from "@mui/material";
 
 const ComputersList = () => {
     const [currentInternetCafe, setCurrentInternetCafe] = useState({});
@@ -40,9 +40,9 @@ const ComputersList = () => {
         <div className="container">
             <div className="card">
                 <div className="card-title">
-                    <h2>'{currentInternetCafe.name}' computer list</h2>
+                    <h2>{currentInternetCafe.name} computers</h2>
                 </div>
-                <Grid container spacing={2}>
+                <Grid container spacing={0}>
                     {computersData.map((computer, index) => (
                         <Grid key={computer.id} item xs={12} sm={6} md={4} lg={3} xl={3}>
                             <Link to={`/internetCafes/${internetCafeId}/computers/123`} style={{ textDecoration: 'none', color: 'inherit' }}>
@@ -76,11 +76,18 @@ const ComputersList = () => {
                                     </CardContent>
                                 </Card>
                             </Link>
-                        </Grid>))}
+                        </Grid>
+                    ))}
                 </Grid>
+                <Link to="/internetCafes" style={{ textDecoration: 'none' }}>
+                    <Button variant="contained" style={{ marginTop: '20px', backgroundColor: '#67b5ba', color: 'white' }}>
+                        Back
+                    </Button>
+                </Link>
+                <div style={{ marginBottom: '20px' }} />
             </div>
         </div>
-    );
+    )
 }
 
 export default ComputersList;
