@@ -13,6 +13,7 @@ import ComputersList from './components/computers/userIndex';
 import CreateComputer from './components/computers/create';
 import Computers from './components/computers';
 import EditComputer from './components/computers/edit';
+import Reservations from './components/reservations';
 
 
 function App() {
@@ -48,6 +49,7 @@ function App() {
           <Route path='/admin/internetCafes/:internetCafeId/computers' element={<Computers/>}></Route>
           <Route path='/admin/internetCafes/:internetCafeId/computers/create' element={<CreateComputer/>}></Route>
           <Route path='/admin/internetCafes/:internetCafeId/computers/edit/:computerId' element={<EditComputer/>}></Route>
+          <Route path='/admin/internetCafes/:internetCafeId/computers/:computerId/reservations' element={<Reservations/>}></Route>
         </Routes>
       </Router>
     </div>

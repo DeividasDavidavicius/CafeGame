@@ -40,7 +40,7 @@ const ComputersList = () => {
         <div className="container">
             <div className="card">
                 <div className="card-title">
-                    <h2>{currentInternetCafe.name} computers</h2>
+                    <h2>'{currentInternetCafe.name}' computers</h2>
                 </div>
                 <Grid container spacing={0}>
                     {computersData.map((computer, index) => (

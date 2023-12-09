@@ -30,8 +30,6 @@ function Header() {
         if (role.includes('Admin')) {
             navOptions.push(
                 { name: 'Manage internet cafes', route: '/admin/internetCafes' },
-                { name: 'Manage tables', route: 'manage-tables' },
-                { name: 'Manage reservations', route: 'manage-reservations' }
             );
         }
 

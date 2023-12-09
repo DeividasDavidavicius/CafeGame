@@ -133,8 +133,8 @@ function EditComputer() {
                                     </div>
                                     <div className="col-lg-12">
                                         <div className="form-group">
-                                            <button className="btn btn-success" type="submit">Save</button>
-                                            <Link to= {`/admin/internetCafes/${internetCafeId}/computers` } className="btn btn-danger">Back</Link>
+                                            <button className="btn btn-outline-success" type="submit">Save</button>
+                                            <Link to= {`/admin/internetCafes/${internetCafeId}/computers` } className="btn btn-outline-danger">Back</Link>
                                         </div>
                                     </div>
                                 </div>

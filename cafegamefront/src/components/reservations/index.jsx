@@ -1,18 +1,20 @@
 import { useContext, useEffect, useState } from "react";
-import { useUser } from "../../contexts/UserContext";
-import SnackbarContext from "../../contexts/SnackbarContext";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
-import { deleteComputer, getComputers } from "../../services/computersService";
+import SnackbarContext from "../../contexts/SnackbarContext";
+import { useUser } from "../../contexts/UserContext";
 import { getInternetCafe } from "../../services/internetCafeService";
-import { checkTokenValidity, refreshAccessToken } from "../../services/authentication";
+import { getComputer } from "../../services/computersService";
+import { getReservations } from "../../services/reservationService";
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
 
-function Computers() {
-    const [computersData, setComputersData] = useState([]);
-    const [openRemoveModal, setOpenRemoveModal] = useState(false);
+function Reservations()
+{
+    const [reservationsData, setReservationsData] = useState([]);
     const [currentInternetCafe, setCurrentInternetCafe] = useState({});
     const [currentComputer, setCurrentComputer] = useState({});
-    const { internetCafeId } = useParams();
+    const [currentReservation, setCurrentReservation] = useState({});
+    const [openRemoveModal, setOpenRemoveModal] = useState(false);
+    const { internetCafeId, computerId } = useParams();
 
     const openSnackbar = useContext(SnackbarContext);
     const navigate = useNavigate();
@@ -22,42 +24,23 @@ function Computers() {
         navigate("edit/" + id)
     }
 
-    const LoadReservations = (id) => {
-        navigate(id+ "/reservations")
-    }
-
-    const handleOpenRemove = (computer) => {
-        setCurrentComputer(computer);
+    const handleOpenRemove = (reservation) => {
+        setCurrentReservation(reservation);
         setOpenRemoveModal(true);
     };
 
     const handleCloseRemove = () => {
         setOpenRemoveModal(false);
-        setCurrentComputer({});
+        setCurrentReservation({});
     };
 
-    const handleRemoveComputer = async () => {
-        const accessToken = localStorage.getItem('accessToken');
-        if (!checkTokenValidity(accessToken)) {
-            const result = await refreshAccessToken();
-            if (!result.success) {
-                openSnackbar('You need to login!', 'error');
-                setLogout();
-                navigate('/login');
-                return;
-            }
+    const handleRemoveReservation = async () => {
+    }
 
-            setLogin(result.response.data.accessToken, result.response.data.refreshToken);
-        }
-
-        deleteComputer(internetCafeId, currentComputer.id);
-        openSnackbar('Computer deleted successfully!', 'success');
-
-        const updatedComputers = computersData.filter(
-            (computer) => computer.id !== currentComputer.id
-        );
-        setComputersData(updatedComputers);
-        handleCloseRemove();
+    const formatDate = (date) => {
+        const dateTime = new Date(date);
+        const formattedDateTime = dateTime.toLocaleString();
+        return formattedDateTime;
     }
 
     useEffect(() => {
@@ -70,7 +53,8 @@ function Computers() {
             try{
                 const result = await getInternetCafe(internetCafeId);
                 setCurrentInternetCafe(result);
-                getComputersData();
+
+                getComputerData();
             }
             catch
             {
@@ -79,10 +63,25 @@ function Computers() {
             }
         };
 
-        const getComputersData = async () => {
-            const result = await getComputers(internetCafeId);
+        const getComputerData = async () => {
+            try
+            {
+                const result = await getComputer(internetCafeId, computerId);
+                setCurrentComputer(result);
+
+                getReservationsData();
+            }
+            catch
+            {
+                openSnackbar('This computer does not exist!', 'error');
+                navigate('/');
+            };
+        };
+
+        const getReservationsData = async () => {
+            const result = await getReservations(internetCafeId, computerId);
             const sortedResult = [...result].sort((a, b) => a.id - b.id);
-            setComputersData(sortedResult);
+            setReservationsData(sortedResult);
         };
 
         getInternetCafeData();
@@ -93,15 +92,15 @@ function Computers() {
         <div className="container">
             <div className="card">
                 <div className="card-title">
-                    <h2>'{currentInternetCafe.name}' computer list</h2>
+                    <h2>'{currentInternetCafe.name}' computer '{computerId}' reservations</h2>
                 </div>
                 <div className="card-body">
                     <div>
                     <div className="divbtn">
-                        <Link to="create" className="btn btn-outline-dark" style={{ fontWeight: 'bold', color: '#67b5ba', border: '2px solid black' }}>Add computer (+)</Link>
+                        <Link to="create" className="btn btn-outline-dark" style={{ fontWeight: 'bold', color: '#67b5ba', border: '2px solid black' }}>Add reservation (+)</Link>
                     </div>
                     <div className="divbtn2">
-                        <Link to="/admin/internetCafes" className="btn btn-outline-dark" style={{ fontWeight: 'bold', color: '#67b5ba', border: '2px solid black' }}>Back</Link>
+                        <Link to={`/admin/internetCafes/${internetCafeId}/computers`} className="btn btn-outline-dark" style={{ fontWeight: 'bold', color: '#67b5ba', border: '2px solid black' }}>Back</Link>
                     </div>
                     </div>
                     <div style={{ height: '10px' }} />
@@ -109,27 +108,22 @@ function Computers() {
                         <thead>
                             <tr>
                                 <td style={{ backgroundColor: '#67b5ba', color: 'white' }}>ID</td>
-                                <td style={{ backgroundColor: '#67b5ba', color: 'white' }}>RAM</td>
-                                <td style={{ backgroundColor: '#67b5ba', color: 'white' }}>CPU</td>
-                                <td style={{ backgroundColor: '#67b5ba', color: 'white' }}>GPU</td>
-                                <td style={{ backgroundColor: '#67b5ba', color: 'white' }}>Monitor resolution</td>
-                                <td style={{ backgroundColor: '#67b5ba', color: 'white' }}>Monitor refresh rate</td>
+                                <td style={{ backgroundColor: '#67b5ba', color: 'white' }}>Name</td>
+                                <td style={{ backgroundColor: '#67b5ba', color: 'white' }}>Start</td>
+                                <td style={{ backgroundColor: '#67b5ba', color: 'white' }}>End</td>
                                 <td style={{ backgroundColor: '#67b5ba', color: 'white' }}>Action</td>
                             </tr>
                         </thead>
                         <tbody>
                             {
-                                computersData.map(item => (
+                                reservationsData.map(item => (
                                     <tr key={item.id}>
                                         <td>{item.id}</td>
-                                        <td>{item.ram}</td>
-                                        <td>{item.cpu}</td>
-                                        <td>{item.gpu}</td>
-                                        <td>{item.monitorResolution}</td>
-                                        <td>{item.monitorRefreshRate}</td>
+                                        <td>{item.name}</td>
+                                        <td>{ formatDate(item.start) }</td>
+                                        <td>{ formatDate(item.end) }</td>
                                         <td><a onClick={() => { LoadEdit(item.id) }} className="btn btn-outline-primary">Edit</a>
                                             <a onClick={() => { handleOpenRemove(item) }} className="btn btn-outline-danger">Remove</a>
-                                            <a onClick={() => { LoadReservations(item.id) }} className="btn btn-outline-dark">Info</a>
                                         </td>
                                     </tr>
                                 ))
@@ -149,7 +143,7 @@ function Computers() {
                     <h6>Monitor refresh rate: {currentComputer.monitorRefreshRate}</h6>
                 </DialogContent>
                 <DialogActions style={{ justifyContent: 'center' }}>
-                    <Button onClick={handleRemoveComputer} color="primary">
+                    <Button onClick={handleRemoveReservation} color="primary">
                         Remove Internet cafe
                     </Button>
                     <Button onClick={handleCloseRemove} color="primary">
@@ -161,4 +155,4 @@ function Computers() {
     );
 }
 
-export default Computers;
+export default Reservations;
