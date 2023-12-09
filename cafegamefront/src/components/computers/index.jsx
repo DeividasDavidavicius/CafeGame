@@ -1,16 +1,18 @@
 import { useContext, useEffect, useState } from "react";
-import { Link, useNavigate } from 'react-router-dom';
-import { deleteInternetCafe, getInternetCafes } from "../../services/internetCafeService";
-import { checkTokenValidity, refreshAccessToken } from "../../services/authentication";
-import SnackbarContext from "../../contexts/SnackbarContext";
 import { useUser } from "../../contexts/UserContext";
+import SnackbarContext from "../../contexts/SnackbarContext";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
+import { getComputers } from "../../services/computersService";
+import { getInternetCafe } from "../../services/internetCafeService";
 
-
-function InternetCafes() {
-    const [internetCafesData, setInternetCafesData] = useState([]);
+function Computers() {
+    const [computersData, setComputersData] = useState([]);
     const [openRemoveModal, setOpenRemoveModal] = useState(false);
-    const [currentCafe, setCurrentCafe] = useState({});
+    const [currentInternetCafe, setCurrentInternetCafe] = useState({});
+    const [currentComputer, setCurrentComputer] = useState({});
+    const { internetCafeId } = useParams();
+
     const openSnackbar = useContext(SnackbarContext);
     const navigate = useNavigate();
     const { setLogin, setLogout } = useUser();
@@ -19,58 +21,52 @@ function InternetCafes() {
         navigate("edit/" + id)
     }
 
-    const LoadComputers = (id) => {
+    const LoadReservations = (id) => {
         navigate(id+ "/computers")
     }
 
     const handleOpenRemove = (cafe) => {
-        setCurrentCafe(cafe);
+        setCurrentComputer(cafe);
         setOpenRemoveModal(true);
     };
 
     const handleCloseRemove = () => {
         setOpenRemoveModal(false);
-        setCurrentCafe({});
+        setCurrentComputer({});
     };
 
-    const handleRemoveCafe = async () => {
-        const accessToken = localStorage.getItem('accessToken');
-        if (!checkTokenValidity(accessToken)) {
-            const result = await refreshAccessToken();
-            if (!result.success) {
-                openSnackbar('You need to login!', 'error');
-                setLogout();
-                navigate('/login');
-                return;
-            }
-
-            setLogin(result.response.data.accessToken, result.response.data.refreshToken);
-        }
-
-        deleteInternetCafe(currentCafe.id);
-
-        const updatedInternetCafes = internetCafesData.filter(
-            (internetCafe) => internetCafe.id !== currentCafe.id
-        );
-        setInternetCafesData(updatedInternetCafes);
+    const handleRemoveComputer = async () => {
     }
 
-
     useEffect(() => {
-        const getInternetCafesData = async () => {
-            const result = await getInternetCafes();
-            const sortedResult = [...result].sort((a, b) => a.id - b.id);
-            setInternetCafesData(sortedResult);
+        const getInternetCafeData = async () => {
+            try{
+                const result = await getInternetCafe(internetCafeId);
+                setCurrentInternetCafe(result);
+                getComputersData();
+            }
+            catch
+            {
+                openSnackbar('This internet cafe does not exist!', 'error');
+                navigate('/');
+            }
         };
 
-        getInternetCafesData();
+        const getComputersData = async () => {
+            const result = await getComputers(internetCafeId);
+            const sortedResult = [...result].sort((a, b) => a.id - b.id);
+            setComputersData(sortedResult);
+        };
+
+        getInternetCafeData();
+
     }, []);
 
     return (
         <div className="container">
             <div className="card">
                 <div className="card-title">
-                    <h2>Internet cafe list</h2>
+                    <h2>'{currentInternetCafe.name}' computer list</h2>
                 </div>
                 <div className="card-body">
                     <div className="divbtn">
@@ -81,21 +77,27 @@ function InternetCafes() {
                         <thead>
                             <tr>
                                 <td style={{ backgroundColor: '#67b5ba', color: 'white' }}>ID</td>
-                                <td style={{ backgroundColor: '#67b5ba', color: 'white' }}>Name</td>
-                                <td style={{ backgroundColor: '#67b5ba', color: 'white' }}>Address</td>
+                                <td style={{ backgroundColor: '#67b5ba', color: 'white' }}>RAM</td>
+                                <td style={{ backgroundColor: '#67b5ba', color: 'white' }}>CPU</td>
+                                <td style={{ backgroundColor: '#67b5ba', color: 'white' }}>GPU</td>
+                                <td style={{ backgroundColor: '#67b5ba', color: 'white' }}>Monitor resolution</td>
+                                <td style={{ backgroundColor: '#67b5ba', color: 'white' }}>Monitor refresh rate</td>
                                 <td style={{ backgroundColor: '#67b5ba', color: 'white' }}>Action</td>
                             </tr>
                         </thead>
                         <tbody>
                             {
-                                internetCafesData.map(item => (
+                                computersData.map(item => (
                                     <tr key={item.id}>
                                         <td>{item.id}</td>
-                                        <td>{item.name}</td>
-                                        <td>{item.address}</td>
+                                        <td>{item.ram}</td>
+                                        <td>{item.cpu}</td>
+                                        <td>{item.gpu}</td>
+                                        <td>{item.monitorResolution}</td>
+                                        <td>{item.monitorRefreshRate}</td>
                                         <td><a onClick={() => { LoadEdit(item.id) }} className="btn btn-outline-primary">Edit</a>
                                             <a onClick={() => { handleOpenRemove(item) }} className="btn btn-outline-danger">Remove</a>
-                                            <a onClick={() => { LoadComputers(item.id) }} className="btn btn-outline-dark">Info</a>
+                                            <a onClick={() => { LoadReservations(item.id) }} className="btn btn-outline-dark">Info</a>
                                         </td>
                                     </tr>
                                 ))
@@ -108,11 +110,11 @@ function InternetCafes() {
             <Dialog open={openRemoveModal} onClose={handleCloseRemove}>
                 <DialogTitle>Do you really want to remove this cafe?</DialogTitle>
                 <DialogContent>
-                    <h6>Name: {currentCafe.name}</h6>
-                    <h6>Address: {currentCafe.address}</h6>
+                    <h6>Name: {currentComputer.name}</h6>
+                    <h6>Address: {currentComputer.address}</h6>
                 </DialogContent>
                 <DialogActions style={{ justifyContent: 'center' }}>
-                    <Button onClick={handleRemoveCafe} color="primary">
+                    <Button onClick={handleRemoveComputer} color="primary">
                         Remove Internet cafe
                     </Button>
                     <Button onClick={handleCloseRemove} color="primary">
@@ -124,4 +126,4 @@ function InternetCafes() {
     );
 }
 
-export default InternetCafes;
+export default Computers;

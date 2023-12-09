@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { getInternetCafe } from "../../../services/internetCafeService";
+import { getInternetCafe } from "../../services/internetCafeService";
 import { useContext, useEffect } from "react";
-import SnackbarContext from "../../../contexts/SnackbarContext";
+import SnackbarContext from "../../contexts/SnackbarContext";
 
 const ComputersList = () => {
     const { internetCafeId } = useParams();

@@ -10,7 +10,9 @@ import Register2 from './components/authentication/register2';
 import Register from './components/authentication/register';
 import Header from './components/header';
 import InternetCafesList from './components/internetCafes/userIndex';
-import ComputersList from './components/authentication/computers/userIndex';
+import ComputersList from './components/computers/userIndex';
+import CreateComputer from './components/computers/create';
+import Computers from './components/computers';
 
 
 function App() {
@@ -41,9 +43,10 @@ function App() {
           <Route path='/internetCafes' element={<InternetCafesList />}></Route>
           <Route path='/internetCafes/:internetCafeId/computers' element={<ComputersList/>}></Route>
           <Route path='/admin/internetCafes' element={<InternetCafes />}></Route>
-          <Route path='/admin/internetCafes/info/:internetCafeId' element={<InfoInternetCafe />}></Route>
-          <Route path='/admin/internetCafes/create' element={<CreateInternetCafe></CreateInternetCafe>}></Route>
-          <Route path='/admin/internetCafes/edit/:internetCafeId' element={<EditInternetCafe></EditInternetCafe>}></Route>
+          <Route path='/admin/internetCafes/create' element={<CreateInternetCafe/>}></Route>
+          <Route path='/admin/internetCafes/edit/:internetCafeId' element={<EditInternetCafe/>}></Route>
+          <Route path='/admin/internetCafes/:internetCafeId/computers' element={<Computers/>}></Route>
+          <Route path='/admin/internetCafes/:internetCafeId/computers/create' element={<CreateComputer/>}></Route>
         </Routes>
       </Router>
     </div>

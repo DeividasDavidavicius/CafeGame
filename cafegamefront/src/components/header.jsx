@@ -20,8 +20,12 @@ function Header() {
 
     let navOptions = [];
 
+    const pages = [
+        { name: 'Internet cafes', route: 'internetCafes/' }
+    ];
+
     if(isLoggedIn === true) {
-        navOptions.push({ name: 'Your reservations', route: 'user/reservations' });
+        pages.push({ name: 'My reservations', route: 'user/reservations' });
 
         if (role.includes('Admin')) {
             navOptions.push(
@@ -82,11 +86,6 @@ function Header() {
             }
           } catch { }
     }
-
-
-    const pages = [
-        { name: 'Internet cafes', route: 'internetCafes/' }
-    ];
 
     const imageClick = [
         { name: 'Main', route: '/' },
