@@ -123,17 +123,6 @@ namespace CafeGameAPI.Controllers
             return Ok(reservations.Select(reservation => new ReservationDto(reservation.Id, reservation.Name, reservation.Start, reservation.End, reservation.UserId)));
         }
 
-        [HttpGet]
-        [Authorize(Roles = UserRoles.RegisteredUser)]
-        [Route("user")]
-        public async Task<ActionResult<IEnumerable<ReservationDto>>> GetManyUser()
-        {
-            var UserId = User.FindFirstValue(JwtRegisteredClaimNames.Sub);
-            var reservations = await _reservationsRepository.GetUserAsync(UserId);
-
-            return Ok(reservations.Select(reservation => new FullReservationDto(reservation.Id, reservation.Name, reservation.Start, reservation.End, reservation.UserId, reservation.Computer.Id, reservation.Computer.InternetCafe.Id)));
-        }
-
         [HttpPatch]
         [Authorize(Roles = UserRoles.RegisteredUser)]
         [Route("{reservationId}")]
