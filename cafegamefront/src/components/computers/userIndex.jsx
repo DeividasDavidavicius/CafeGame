@@ -46,35 +46,35 @@ const ComputersList = () => {
                     {computersData.map((computer, index) => (
                         <Grid key={computer.id} item xs={12} sm={6} md={4} lg={3} xl={3}>
                             <Link to={`/internetCafes/${internetCafeId}/computers/123`} style={{ textDecoration: 'none', color: 'inherit' }}>
-                            <Card
-                    sx={{
-                      margin: '10px',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      alignItems: 'center',
-                    }}
-                  >
-                                <CardContent>
-                                    <Typography variant="h5" component="div">
-                                        {computer.id}
-                                    </Typography>
-                                    <Typography variant="body2" color="text.secondary">
-                                        <strong>RAM:</strong> {computer.ram}
-                                    </Typography>
-                                    <Typography variant="body2" color="text.secondary">
-                                        <strong>CPU:</strong> {computer.cpu}
-                                    </Typography>
-                                    <Typography variant="body2" color="text.secondary">
-                                        <strong>GPU:</strong> {computer.gpu}
-                                    </Typography>
-                                    <Typography variant="body2" color="text.secondary">
-                                        <strong>Monitor Resolution:</strong> {computer.monitorResolution}
-                                    </Typography>
-                                    <Typography variant="body2" color="text.secondary">
-                                        <strong>Monitor Refresh Rate:</strong> {computer.monitorRefreshRate}
-                                    </Typography>
-                                </CardContent>
-                            </Card>
+                                <Card
+                                    sx={{
+                                        margin: '10px',
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        alignItems: 'center',
+                                    }}
+                                >
+                                    <CardContent>
+                                        <Typography variant="h5" component="div">
+                                            {computer.id}
+                                        </Typography>
+                                        <Typography variant="body2" color="text.secondary">
+                                            <strong>RAM:</strong> {computer.ram}
+                                        </Typography>
+                                        <Typography variant="body2" color="text.secondary">
+                                            <strong>CPU:</strong> {computer.cpu}
+                                        </Typography>
+                                        <Typography variant="body2" color="text.secondary">
+                                            <strong>GPU:</strong> {computer.gpu}
+                                        </Typography>
+                                        <Typography variant="body2" color="text.secondary">
+                                            <strong>Monitor Resolution:</strong> {computer.monitorResolution}
+                                        </Typography>
+                                        <Typography variant="body2" color="text.secondary">
+                                            <strong>Monitor Refresh Rate:</strong> {computer.monitorRefreshRate}
+                                        </Typography>
+                                    </CardContent>
+                                </Card>
                             </Link>
                         </Grid>))}
                 </Grid>
