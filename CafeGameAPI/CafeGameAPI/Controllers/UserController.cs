@@ -32,7 +32,7 @@ namespace CafeGameAPI.Controllers
             var UserId = User.FindFirstValue(JwtRegisteredClaimNames.Sub);
             var reservations = await _reservationsRepository.GetUserAsync(UserId);
 
-            return Ok(reservations.Select(reservation => new FullReservationDto(reservation.Id, reservation.Name, reservation.Start, reservation.End, reservation.UserId, reservation.Computer.Id, reservation.Computer.InternetCafe.Id)));
+            return Ok(reservations.Select(reservation => new FullReservationDto(reservation.Id, reservation.Name, reservation.Start, reservation.End, reservation.UserId, reservation.Computer.InternetCafe.Id, reservation.Computer.Id)));
         }
     }
 }

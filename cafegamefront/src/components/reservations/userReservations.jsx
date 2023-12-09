@@ -10,17 +10,15 @@ import { checkTokenValidity, refreshAccessToken } from "../../services/authentic
 
 function UserReservations() {
     const [reservationsData, setReservationsData] = useState([]);
-    const [currentInternetCafe, setCurrentInternetCafe] = useState({});
-    const [currentComputer, setCurrentComputer] = useState({});
     const [currentReservation, setCurrentReservation] = useState({});
     const [openRemoveModal, setOpenRemoveModal] = useState(false);
-    const { internetCafeId, computerId } = useParams();
 
     const openSnackbar = useContext(SnackbarContext);
     const navigate = useNavigate();
     const { role, setLogin, setLogout, getUserId } = useUser();
 
     const LoadEdit = (internetCafeId, computerId, reservationId) => {
+        console.log(internetCafeId + " " + computerId + " " + reservationId)
         navigate(`/internetCafes/${internetCafeId}/computers/${computerId}/reservations/edit/${reservationId}`)
     }
 
