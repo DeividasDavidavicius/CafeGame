@@ -72,16 +72,18 @@ function CreateReservation() {
             setLogin(result.response.data.accessToken, result.response.data.refreshToken);
         }
 
-        const postData = {name, startDate, endDate};
+        const start = startDate + ":00Z";
+        const end = endDate + ":00Z";
+
+        const postData = {name, start, end};
 
         try {
             await postReservation(postData, internetCafeId, computerId);
+            navigate(`/admin/internetCafes/${internetCafeId}/computers/${computerId}/reservations`)
+            openSnackbar('Reservation created successfully!', 'success');
         } catch(error) {
-            console.log(postData);
-            console.log(error.response.data.errorMessage);
+            openSnackbar(error.response.data.errorMessage, "error")
         }
-
-        console.log(postData);
     }
 
     useEffect(() => {
