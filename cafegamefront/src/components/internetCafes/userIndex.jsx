@@ -29,7 +29,7 @@ const InternetCafesList = () => {
                 <Link to={`/internetCafes/${cafe.id}/computers`} style={{ textDecoration: 'none', color: 'inherit' }}>
                   <Card
                     sx={{
-                      margin: '10px', // Adjust the margin as needed (half of the original spacing)
+                      margin: '10px',
                       display: 'flex',
                       flexDirection: 'column',
                       alignItems: 'center',
