@@ -1,13 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Avatar, Grid, Card, CardContent, Typography } from '@mui/material';
+import { Avatar, Grid, Card, CardContent, Typography, CircularProgress } from '@mui/material';
 import { getInternetCafes } from '../../services/internetCafeService';
 
 const InternetCafesList = () => {
+  const [isLoading, setIsLoading] = useState(true);
   const [internetCafesData, setInternetCafesData] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
+    const delay = setTimeout(() => {
+      setIsLoading(false);
+    }, 800);
+
     const getInternetCafesData = async () => {
       const result = await getInternetCafes();
       const sortedResult = [...result].sort((a, b) => a.id - b.id);
@@ -15,10 +20,15 @@ const InternetCafesList = () => {
     };
 
     getInternetCafesData();
+    return () => clearTimeout(delay);
   }, []);
 
   return (
-    <div className="container">
+    <div>
+    {isLoading ? (
+      <LoadingPage />
+    ) : (
+      <div className="container">
       <div className="card">
         <div>
           <h1>Internet Cafes</h1>
@@ -68,7 +78,31 @@ const InternetCafesList = () => {
         </div>
       </div>
     </div>
+    )}
+  </div>
   );
 };
+
+const loadingContainerStyle = {
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  height: '50vh',
+};
+
+const loadingTextStyle = {
+  marginLeft: '8px', // Adjust as needed
+  fontSize: '2rem',
+  fontWeight: 'bold',
+};
+
+function LoadingPage() {
+  return (
+    <div style={loadingContainerStyle}>
+<CircularProgress size={35} thickness={8} style={{ color: '#138c94' }} />
+      <span style={loadingTextStyle}>LOADING...</span>
+    </div>
+  );
+}
 
 export default InternetCafesList;

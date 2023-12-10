@@ -24,7 +24,7 @@ function Header() {
         { name: 'Internet cafes', route: 'internetCafes/' }
     ];
 
-    if(isLoggedIn === true) {
+    if (isLoggedIn === true) {
         pages.push({ name: 'My reservations', route: 'user/reservations' });
 
         if (role.includes('Admin')) {
@@ -76,23 +76,20 @@ function Header() {
 
         try {
             const response = await logout(localStorage.getItem('accessToken'));
-            if(response.status === 200)
-            {
+            if (response.status === 200) {
                 setLogout(accessToken);
                 navigation('/login');
                 openSnackbar('Succesfully logged out!', 'success');
             }
-          } catch { }
+        } catch { }
     }
 
     const imageClick = [
         { name: 'Main', route: '/' },
-      ];
-
-
+    ];
 
     return (
-        <AppBar position="static" style={{ backgroundColor: '#138c94' }} >
+        <AppBar position="sticky" style={{ top: 0, zIndex: 1000, backgroundColor: '#138c94' }}>
             <Container maxWidth="x1">
                 <Toolbar disableGutters>
                     <div onClick={() => handleNavigation(imageClick[0].route)} style={{ textDecoration: 'none', color: 'white', cursor: 'pointer', pointerEvents: 'auto' }}>
@@ -170,13 +167,16 @@ function Header() {
                                 style={{ cursor: 'pointer', backgroundColor: 'transparent', border: 'none' }}
                             >
                                 <MenuItem onClick={handleCloseNavMenu} style={{ pointerEvents: 'none' }}>
-                                    <Link to={page.route} style={{ textDecoration: 'none', color: 'white', fontWeight: 'bold' }}>
+                                    <Link to={page.route} style={{ textDecoration: 'none', color: 'white', fontWeight: 'bold', fontFamily: 'Courier, monospace' }}>
                                         {page.name}
                                     </Link>
                                 </MenuItem>
                             </button>
                         ))}
                     </Box>
+
+
+
                     <Box sx={{ flexGrow: 0 }}>
                         {isLoggedIn ?
                             <>
@@ -225,12 +225,12 @@ function Header() {
                             <>
                                 <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
                                     <Link to="/login">
-                                        <Button startIcon={<LoginIcon />} sx={{ marginRight: 1, color: 'white' }}>
+                                        <Button startIcon={<LoginIcon />} sx={{ marginRight: 1, color: 'white', fontWeight: 'bold', fontFamily: 'Courier, monospace' }}>
                                             Login
                                         </Button>
                                     </Link>
                                     <Link to="/register">
-                                        <Button startIcon={<RegisterIcon />} sx={{ marginRight: 1, color: 'white' }}>
+                                        <Button startIcon={<RegisterIcon />} sx={{ marginRight: 1, color: 'white', fontWeight: 'bold', fontFamily: 'Courier, monospace' }}>
                                             Register
                                         </Button>
                                     </Link>

@@ -20,6 +20,7 @@ import UserReservations from './components/reservations/userReservations';
 import UserEditReservation from './components/reservations/userEdit';
 import ReservationsList from './components/reservations/userIndex';
 import CreateReservationUser from './components/reservations/createUser';
+import Footer from './components/footer';
 
 function App() {
   useEffect(() => {
@@ -62,6 +63,7 @@ function App() {
           <Route path='/admin/internetCafes/:internetCafeId/computers/:computerId/reservations/create' element={<CreateReservation/>}></Route>
           <Route path='/admin/internetCafes/:internetCafeId/computers/:computerId/reservations/edit/:reservationId' element={<EditReservation/>}></Route>
         </Routes>
+        <Footer/>
       </Router>
     </div>
   );

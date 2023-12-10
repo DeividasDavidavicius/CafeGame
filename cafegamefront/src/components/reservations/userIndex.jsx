@@ -5,9 +5,10 @@ import { useUser } from "../../contexts/UserContext";
 import { getInternetCafe } from "../../services/internetCafeService";
 import { getComputer } from "../../services/computersService";
 import { getReservations } from "../../services/reservationService";
-import { Button, Card, CardContent, Grid, TextField, Typography } from '@mui/material';
+import { Button, Card, CardContent, CircularProgress, Grid, TextField, Typography } from '@mui/material';
 
 function ReservationsList() {
+  const [isLoading, setIsLoading] = useState(true);
   const [reservationsData, setReservationsData] = useState([]);
   const [currentInternetCafe, setCurrentInternetCafe] = useState({});
   const [currentComputer, setCurrentComputer] = useState({});
@@ -68,6 +69,10 @@ function ReservationsList() {
   };
 
   useEffect(() => {
+    const delay = setTimeout(() => {
+      setIsLoading(false);
+    }, 800);
+
     const getInternetCafeData = async () => {
       try {
         const result = await getInternetCafe(internetCafeId);
@@ -117,69 +122,98 @@ function ReservationsList() {
 
     getInternetCafeData();
 
+    return () => clearTimeout(delay);
   }, []);
 
   return (
-    <div className="container">
-      <div className="card">
-        <div className="card-title">
-          <h2>'{currentInternetCafe.name}' computer '{computerId}' reservations</h2>
-        </div>
-        {role.includes("RegisteredUser") &&
-          <div className="divbtn">
-            <Link to={`create`} style={{ textDecoration: 'none', display: 'inline-block' }}>
-              <Button variant="contained" style={{ marginTop: '20px', backgroundColor: '#67b5ba', color: 'white', display: 'inline-block' }}>
-                Create Reservation
-              </Button>
-            </Link>
-          </div >
-        }
-        <div style={{ height: '20px' }} />
+    <div>
+      {isLoading ? (
+        <LoadingPage />
+      ) : (
+        <div className="container">
+          <div className="card">
+            <div className="card-title">
+              <h2>'{currentInternetCafe.name}' computer '{computerId}' reservations</h2>
+            </div>
+            {role.includes("RegisteredUser") &&
+              <div className="divbtn">
+                <Link to={`create`} style={{ textDecoration: 'none', display: 'inline-block' }}>
+                  <Button variant="contained" style={{ marginTop: '20px', backgroundColor: '#67b5ba', color: 'white', display: 'inline-block' }}>
+                    Create Reservation
+                  </Button>
+                </Link>
+              </div >
+            }
+            <div style={{ height: '20px' }} />
 
-        <TextField
-          type="date"
-          label="Select Date"
-          value={selectedDate ? formatDate2(selectedDate) : ''}
-          onChange={(e) => handleDateChange(new Date(e.target.value))}
-          InputLabelProps={{ shrink: true }}
-          style={{ width: '45%', margin: 'auto', marginBottom: '10px' }}
-        />
+            <TextField
+              type="date"
+              label="Select Date"
+              value={selectedDate ? formatDate2(selectedDate) : ''}
+              onChange={(e) => handleDateChange(new Date(e.target.value))}
+              InputLabelProps={{ shrink: true }}
+              style={{ width: '45%', margin: 'auto', marginBottom: '10px' }}
+            />
 
-        <Grid container spacing={0}>
-          {reservationsData.map((reservation, index) => (
-            <Grid key={index} item xs={12} sm={6} md={4} lg={3} xl={3}>
-              <Card
-                sx={{
-                  margin: '10px',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                }}
-              >
-                <CardContent>
-                  <Typography variant="h5" component="div">
-                    {reservation.name}
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    <strong>Start Date:</strong> {formatDate(reservation.start)}
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    <strong>End Date:</strong> {formatDate(reservation.end)}
-                  </Typography>
-                </CardContent>
-              </Card>
+            <Grid container spacing={0}>
+              {reservationsData.map((reservation, index) => (
+                <Grid key={index} item xs={12} sm={6} md={4} lg={3} xl={3}>
+                  <Card
+                    sx={{
+                      margin: '10px',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <CardContent>
+                      <Typography variant="h5" component="div">
+                        {reservation.name}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        <strong>Start Date:</strong> {formatDate(reservation.start)}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        <strong>End Date:</strong> {formatDate(reservation.end)}
+                      </Typography>
+                    </CardContent>
+                  </Card>
+                </Grid>
+              ))}
             </Grid>
-          ))}
-        </Grid>
-        <div className="divbtn">
-          <Link to={`/internetCafes/${internetCafeId}/computers`} style={{ textDecoration: 'none', display: 'inline-block' }}>
-            <Button variant="contained" style={{ marginTop: '20px', backgroundColor: '#67b5ba', color: 'white', display: 'inline-block' }}>
-              Back
-            </Button>
-          </Link>
-        </div >
-        <div style={{ marginBottom: '20px' }} />
-      </div>
+            <div className="divbtn">
+              <Link to={`/internetCafes/${internetCafeId}/computers`} style={{ textDecoration: 'none', display: 'inline-block' }}>
+                <Button variant="contained" style={{ marginTop: '20px', backgroundColor: '#67b5ba', color: 'white', display: 'inline-block' }}>
+                  Back
+                </Button>
+              </Link>
+            </div >
+            <div style={{ marginBottom: '20px' }} />
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+const loadingContainerStyle = {
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  height: '50vh',
+};
+
+const loadingTextStyle = {
+  marginLeft: '8px', // Adjust as needed
+  fontSize: '2rem',
+  fontWeight: 'bold',
+};
+
+function LoadingPage() {
+  return (
+    <div style={loadingContainerStyle}>
+      <CircularProgress size={35} thickness={8} style={{ color: '#138c94' }} />
+      <span style={loadingTextStyle}>LOADING...</span>
     </div>
   );
 }
