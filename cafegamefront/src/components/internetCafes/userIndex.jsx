@@ -25,61 +25,61 @@ const InternetCafesList = () => {
 
   return (
     <div>
-    {isLoading ? (
-      <LoadingPage />
-    ) : (
-      <div className="container">
-      <div className="card">
-        <div>
-          <h1>Internet Cafes</h1>
-          <div style={{ height: '30px' }} />
-          <Grid container spacing={0}>
-            {internetCafesData.map((cafe) => (
-              <Grid key={cafe.id} item xs={12} sm={6} md={4} lg={3} xl={3}>
-                <Link to={`/internetCafes/${cafe.id}/computers`} style={{ textDecoration: 'none', color: 'inherit' }}>
-                  <Card
-                    sx={{
-                      margin: '10px',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      alignItems: 'center',
-                    }}
-                  >
-                    <Avatar
-                      sx={{
-                        width: '70%',
-                        height: 150,
-                        margin: 'auto',
-                        mt: 2,
-                        borderRadius: '50%',
-                        overflow: 'hidden',
-                        backgroundColor: 'transparent',
-                      }}
-                    >
-                      <img
-                        src="/assets/CafeGameLogo.svg"
-                        alt={`Avatar for ${cafe.name}`}
-                        style={{
-                          width: '100%',
-                          height: '100%',
-                          objectFit: 'cover',
+      {isLoading ? (
+        <LoadingPage />
+      ) : (
+        <div className="container">
+          <div className="card">
+            <div>
+              <h1>Internet Cafes</h1>
+              <div style={{ height: '30px' }} />
+              <Grid container spacing={0}>
+                {internetCafesData.map((cafe) => (
+                  <Grid key={cafe.id} item xs={12} sm={6} md={4} lg={3} xl={3}>
+                    <Link to={`/internetCafes/${cafe.id}/computers`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                      <Card
+                        sx={{
+                          margin: '10px',
+                          display: 'flex',
+                          flexDirection: 'column',
+                          alignItems: 'center',
                         }}
-                      />
-                    </Avatar>
-                    <CardContent>
-                      <Typography variant="h6">{cafe.name}</Typography>
-                      <Typography variant="body2">{cafe.address}</Typography>
-                    </CardContent>
-                  </Card>
-                </Link>
+                      >
+                        <Avatar
+                          sx={{
+                            width: '70%',
+                            height: 150,
+                            margin: 'auto',
+                            mt: 2,
+                            borderRadius: '50%',
+                            overflow: 'hidden',
+                            backgroundColor: 'transparent',
+                          }}
+                        >
+                          <img
+                            src="/assets/CafeGameLogo.svg"
+                            alt={`Avatar for ${cafe.name}`}
+                            style={{
+                              width: '100%',
+                              height: '100%',
+                              objectFit: 'cover',
+                            }}
+                          />
+                        </Avatar>
+                        <CardContent>
+                          <Typography variant="h6">{cafe.name}</Typography>
+                          <Typography variant="body2">{cafe.address}</Typography>
+                        </CardContent>
+                      </Card>
+                    </Link>
+                  </Grid>
+                ))}
               </Grid>
-            ))}
-          </Grid>
+            </div>
+          </div>
         </div>
-      </div>
+      )}
     </div>
-    )}
-  </div>
   );
 };
 
@@ -99,7 +99,7 @@ const loadingTextStyle = {
 function LoadingPage() {
   return (
     <div style={loadingContainerStyle}>
-<CircularProgress size={35} thickness={8} style={{ color: '#138c94' }} />
+      <CircularProgress size={35} thickness={8} style={{ color: '#138c94' }} />
       <span style={loadingTextStyle}>LOADING...</span>
     </div>
   );

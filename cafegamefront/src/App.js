@@ -21,6 +21,7 @@ import UserEditReservation from './components/reservations/userEdit';
 import ReservationsList from './components/reservations/userIndex';
 import CreateReservationUser from './components/reservations/createUser';
 import Footer from './components/footer';
+import MainPage from './components/mainPage';
 
 function App() {
   useEffect(() => {
@@ -44,6 +45,7 @@ function App() {
         <Header/>
         <div style={{ height: '40px' }}/>
         <Routes>
+          <Route path='/' element={<MainPage />}></Route>
           <Route path='/login' element={<Login />}></Route>
           <Route path='/register' element={<Register />}></Route>
           <Route path='/user/reservations' element={<UserReservations />}></Route>
