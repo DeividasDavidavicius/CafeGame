@@ -35,7 +35,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowReactApp",
         builder =>
         {
-            builder.WithOrigins("http://localhost:3000", "https://cafe-game.vercel.app", "https://d35ywqpus0h1ko.cloudfront.net/")
+            builder.WithOrigins("http://localhost:3000", "https://cafe-game.vercel.app", "https://d35ywqpus0h1ko.cloudfront.net")
                    .AllowAnyHeader()
                    .AllowAnyMethod()
                    .AllowCredentials();
