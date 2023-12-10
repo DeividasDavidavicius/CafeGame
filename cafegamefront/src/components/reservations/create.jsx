@@ -88,7 +88,7 @@ function CreateReservation() {
 
     useEffect(() => {
         if (!role.includes("Admin")) {
-            openSnackbar('You can not access admin functions!!', 'error');
+            openSnackbar('You can not access admin functions!', 'error');
             navigate('/');
         }
 

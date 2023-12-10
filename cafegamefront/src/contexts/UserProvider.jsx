@@ -12,6 +12,7 @@ const UserContextProvider = ({ children }) => {
             const base64Url = token.split('.')[1];
             const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
             const payload = JSON.parse(atob(base64));
+
             return payload;
         } catch (error) {
             console.error("Failed to decode JWT:", error);
@@ -53,9 +54,16 @@ const UserContextProvider = ({ children }) => {
         return userId;
     }
 
+    const getUserName = () =>
+    {
+        const payload = decodeJWT(localStorage.getItem('accessToken'));
+        const userName = payload["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"];
+        return userName;
+    }
+
 
     return (
-        <UserContext.Provider value={{ isLoggedIn, role, accessToken, refreshToken, decodeJWT, setLogin, setLogout, getUserId }}>
+        <UserContext.Provider value={{ isLoggedIn, role, accessToken, refreshToken, decodeJWT, setLogin, setLogout, getUserId, getUserName }}>
             {children}
         </UserContext.Provider>
     );

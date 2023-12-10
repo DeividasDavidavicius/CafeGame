@@ -15,7 +15,7 @@ function UserReservations() {
 
     const openSnackbar = useContext(SnackbarContext);
     const navigate = useNavigate();
-    const { role, setLogin, setLogout, getUserId } = useUser();
+    const { role, setLogin, setLogout, getUserName } = useUser();
 
     const LoadEdit = (internetCafeId, computerId, reservationId) => {
         console.log(internetCafeId + " " + computerId + " " + reservationId)
@@ -58,7 +58,10 @@ function UserReservations() {
 
     const formatDate = (date) => {
         const dateTime = new Date(date);
-        const formattedDateTime = dateTime.toLocaleString();
+        const offsetMinutes = dateTime.getTimezoneOffset();
+        const utcTime = dateTime.getTime() + offsetMinutes * 60 * 1000;
+        const utcDateTime = new Date(utcTime);
+        const formattedDateTime = utcDateTime.toLocaleString();
         return formattedDateTime;
     }
 
@@ -100,7 +103,7 @@ function UserReservations() {
         <div className="container">
             <div className="card">
                 <div className="card-title">
-                    <h2>My reservations</h2>
+                    <h2>'{getUserName()}' reservations</h2>
                 </div>
                 {reservationsData.length > 0 &&
                     <div className="card-body">

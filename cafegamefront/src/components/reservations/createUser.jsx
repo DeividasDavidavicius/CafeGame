@@ -4,32 +4,62 @@ import { useUser } from "../../contexts/UserContext";
 import SnackbarContext from "../../contexts/SnackbarContext";
 import { getInternetCafe } from "../../services/internetCafeService";
 import { getComputer } from "../../services/computersService";
-import { getReservation, patchReservation } from "../../services/reservationService";
 import { checkTokenValidity, refreshAccessToken } from "../../services/authentication";
+import { postReservation } from "../../services/reservationService";
 
-function EditReservation() {
-    const { internetCafeId, computerId, reservationId } = useParams();
-
+function CreateReservationUser() {
     const [name, setName] = useState("");
-    const [nameStatic, setNameStatic] = useState("");
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
-    const [validation, setValidation] = useState(false);
     const navigate = useNavigate();
-    const { role, setLogin, setLogout } = useUser();
+    const { isLoggedIn, role, accessToken, refreshToken, setLogin, setLogout } = useUser();
     const openSnackbar = useContext(SnackbarContext);
+    const { internetCafeId, computerId } = useParams();
 
-    const formatDate = (date) => {
-        const dateTime = new Date(date);
-        const offsetMinutes = dateTime.getTimezoneOffset();
-        const utcTime = dateTime.getTime() + offsetMinutes * 60 * 1000;
-        const utcDateTime = new Date(utcTime);
-        const formattedDateTime = utcDateTime.toLocaleString();
-        return formattedDateTime;
-    }
+    const getCurrentDateTime = () => {
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = String(now.getMonth() + 1).padStart(2, '0');
+        const day = String(now.getDate()).padStart(2, '0');
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+
+        return `${year}-${month}-${day}T${hours}:${minutes}`;
+    };
+
+    const areDatesValid = () => {
+        const startDateTime = new Date(startDate);
+        const endDateTime = new Date(endDate);
+
+        return (
+            startDateTime.toISOString().slice(0, 10) === endDateTime.toISOString().slice(0, 10)
+        );
+    }; //            startDateTime < endDateTime
+
+    const areDatesValid2 = () => {
+        const startDateTime = new Date(startDate);
+        const endDateTime = new Date(endDate);
+
+        return (
+            startDateTime < endDateTime
+        );
+    };
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        if (!areDatesValid()) {
+            openSnackbar("Start and end dates must be in the same day!", "error")
+            return;
+        }
+
+        if (!areDatesValid2()) {
+            openSnackbar("Start date must be older than end date!", "error")
+            return;
+        }
+
+        console.log(startDate + " " + endDate);
 
         const accessToken = localStorage.getItem('accessToken');
         if (!checkTokenValidity(accessToken)) {
@@ -44,23 +74,30 @@ function EditReservation() {
             setLogin(result.response.data.accessToken, result.response.data.refreshToken);
         }
 
-        const patchData = { name };
-        setValidation(true);
+        const start = startDate + ":00Z";
+        const end = endDate + ":00Z";
 
-        await patchReservation(patchData, internetCafeId, computerId, reservationId);
+        const postData = {name, start, end};
+        console.log(postData);
 
-        openSnackbar('Reservation edited successfully!', 'success');
-        navigate(`/admin/internetCafes/${internetCafeId}/computers/${computerId}/reservations`);
+
+        try {
+            await postReservation(postData, internetCafeId, computerId);
+            navigate(`/internetCafes/${internetCafeId}/computers/${computerId}/reservations`)
+            openSnackbar('Reservation created successfully!', 'success');
+        } catch(error) {
+            openSnackbar(error.response.data.errorMessage, "error")
+        }
     }
 
     useEffect(() => {
-        if (!role.includes("Admin")) {
-            openSnackbar('You can not access admin functions!', 'error');
+        if (!role.includes("RegisteredUser")) {
+            openSnackbar('Only registered users can make a reservation!', 'error');
             navigate('/');
         }
 
         const getInternetCafeData = async () => {
-            try {
+            try{
                 await getInternetCafe(internetCafeId);
                 getComputerData();
             }
@@ -72,9 +109,8 @@ function EditReservation() {
         };
 
         const getComputerData = async () => {
-            try {
+            try{
                 await getComputer(internetCafeId, computerId);
-                getReservationData();
             }
             catch
             {
@@ -82,21 +118,6 @@ function EditReservation() {
                 navigate('/');
             }
         };
-
-        const getReservationData = async () => {
-            try {
-                const result = await getReservation(internetCafeId, computerId, reservationId);
-                setName(result.name);
-                setNameStatic(result.name);
-                setStartDate(result.start);
-                setEndDate(result.end);
-            }
-            catch
-            {
-                openSnackbar('This reservation does not exist!', 'error');
-                navigate('/');
-            }
-        }
 
         getInternetCafeData();
     }, []);
@@ -108,38 +129,43 @@ function EditReservation() {
                     <form className="container" onSubmit={handleSubmit}>
                         <div className="card">
                             <div className="card-title">
-                                <h2>Edit reservation '{nameStatic}'</h2>
+                                <h2>Create internet cafe</h2>
                             </div>
                             <div className="card-body">
                                 <div className="row">
+
                                     <div className="col-lg-12">
                                         <div className="form-group">
                                             <label>Name</label>
-                                            <input value={name} onMouseDown={e => setValidation(true)} onChange={(e => setName(e.target.value))} required className="form-control"></input>
-                                            {name.length === 0 && validation && <span className="text-danger">Enter RAM</span>}
+                                            <input value={name} onChange={(e => setName(e.target.value))} required className="form-control"></input>
+                                            {name.length == 0 && <span className="text-danger">Enter name</span>}
                                         </div>
                                     </div>
 
                                     <div className="col-lg-12">
                                         <div className="form-group">
-                                            <label>Start date</label>
+                                            <label>Start Date</label>
                                             <input
-                                                value={formatDate(startDate)}
-                                                readOnly
+                                                type="datetime-local"
+                                                value={startDate}
+                                                onChange={(e) => setStartDate(e.target.value)}
+                                                required
                                                 className="form-control"
-                                                style={{ backgroundColor: '#e0e8ec', color: 'black' }}
+                                                min={getCurrentDateTime()}
                                             />
                                         </div>
                                     </div>
 
                                     <div className="col-lg-12">
                                         <div className="form-group">
-                                            <label>End date</label>
+                                            <label>End Date</label>
                                             <input
-                                                value={formatDate(endDate)}
-                                                readOnly
+                                                type="datetime-local"
+                                                value={endDate}
+                                                onChange={(e) => setEndDate(e.target.value)}
+                                                required
                                                 className="form-control"
-                                                style={{ backgroundColor: '#e0e8ec', color: 'black' }}
+                                                min={getCurrentDateTime()}
                                             />
                                         </div>
                                     </div>
@@ -147,7 +173,7 @@ function EditReservation() {
                                     <div className="col-lg-12">
                                         <div className="form-group">
                                             <button className="btn btn-outline-success" type="submit">Save</button>
-                                            <Link to={`/admin/internetCafes/${internetCafeId}/computers/${computerId}/reservations`} className="btn btn-outline-danger">Back</Link>
+                                            <Link to={`/internetCafes/${internetCafeId}/computers/${computerId}/reservations`} className="btn btn-outline-danger">Back</Link>
                                         </div>
                                     </div>
                                 </div>
@@ -160,4 +186,4 @@ function EditReservation() {
     );
 }
 
-export default EditReservation;
+export default CreateReservationUser;

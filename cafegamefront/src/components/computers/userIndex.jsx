@@ -45,7 +45,7 @@ const ComputersList = () => {
                 <Grid container spacing={0}>
                     {computersData.map((computer, index) => (
                         <Grid key={computer.id} item xs={12} sm={6} md={4} lg={3} xl={3}>
-                            <Link to={`/internetCafes/${internetCafeId}/computers/123`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                            <Link to={`/internetCafes/${internetCafeId}/computers/${computer.id}/reservations`} style={{ textDecoration: 'none', color: 'inherit' }}>
                                 <Card
                                     sx={{
                                         margin: '10px',
@@ -79,11 +79,13 @@ const ComputersList = () => {
                         </Grid>
                     ))}
                 </Grid>
-                <Link to="/internetCafes" style={{ textDecoration: 'none' }}>
-                    <Button variant="contained" style={{ marginTop: '20px', backgroundColor: '#67b5ba', color: 'white' }}>
-                        Back
-                    </Button>
-                </Link>
+                <div className="divbtn">
+                    <Link to="/internetCafes" style={{ textDecoration: 'none', display: 'inline-block' }}>
+                        <Button variant="contained" style={{ marginTop: '20px', backgroundColor: '#67b5ba', color: 'white', display: 'inline-block' }}>
+                            Back
+                        </Button>
+                    </Link>
+                </div >
                 <div style={{ marginBottom: '20px' }} />
             </div>
         </div>
