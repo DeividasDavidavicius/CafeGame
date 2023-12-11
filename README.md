@@ -30,11 +30,11 @@ Svečias galės peržiūrėti visų internetinių kavinių sąrašą, kavinėse 
 Sistemos sudedamosios dalys:
 
 •	Kliento pusė (ang. Front-End) – naudojant Angular;
-•	Serverio pusė (angl. Back-End) – naudojant .NET 7. Duomenų bazė – MS SQL.
+•	Serverio pusė (angl. Back-End) – naudojant .NET 6. Duomenų bazė – Postgre SQL.
 
-2.1 pav. pavaizduota kuriamos sistemos diegimo diagrama. Sistemos talpinimui yra naudojamas DigitalOcean serveris. Kiekviena sistemos dalis yra diegiama tame pačiame serveryje. Internetinė aplikacija yra pasiekiama per HTTP protokolą. Šios sistemos veikimui (pvz., duomenų manipuliavimui su duomenų baze) yra reikalingas CafeGame API, kuris pasiekiamas per aplikacijų programavimo sąsają. Pats CafeGame API vykdo duomenų mainus su duomenų baze. Tam yra naudojamas EF Core (Entity Framework Core) ORM.
+Pav 1. pavaizduota kuriamos sistemos diegimo diagrama. Api ir duomenų bazės talpitinmui yra naudojamas DigitalOcean serveris, o Web aplikacijai naudojamas Vercel serveris. Internetinė aplikacija yra pasiekiama per HTTP protokolą. Šios sistemos veikimui (pvz., duomenų manipuliavimui su duomenų baze) yra reikalingas CafeGame API, kuris pasiekiamas per aplikacijų programavimo sąsają. Pats CafeGame API vykdo duomenų mainus su duomenų baze. Tam yra naudojamas EF Core (Entity Framework Core) ORM.
 
-![image](https://github.com/DeividasDavidavicius/CafeGame/assets/101116531/c2862b04-d354-4fd7-859b-46646f385480)
+![image](https://github.com/DeividasDavidavicius/CafeGame/assets/101116531/19fe1ffa-ca1f-44ae-b2a9-490d91cbe3a2)
 
 <p align="center">
 pav. 1 Sistemos CafeGame diegimo diagrama
