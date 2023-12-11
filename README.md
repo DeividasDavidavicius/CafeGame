@@ -133,6 +133,7 @@ pav. 18.  Naudotojo rezervacijų sąrašas, kurį mato visi naudotojai wireframe
 pav. 19.  Naudotojo rezervacijų sąrašas, kurį mato visi naudotojai realizacija
 </p>
 
+[L0_Ataskaita_Deividas_Davidavičius.docx](https://github.com/DeividasDavidavicius/CafeGame/files/13635411/L0_Ataskaita_Deividas_Davidavicius.docx)
 
 
 
