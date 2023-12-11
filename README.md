@@ -7,11 +7,12 @@ Svečias galės peržiūrėti visų internetinių kavinių sąrašą, kavinėse 
 
 ### 1.2.	Funkciniai reikalavimai
 #### Neregistruotas sistemos naudotojas galės:
-1.	Prisijungti prie internetinės aplikacijos
-2.	Registruotis prie internetinės aplikacijos
-3.	Peržiūrėti visų interneto kavinių sąrašą
-4.	Peržiūrėti pasirinktos interneto kavinės informaciją ir kavinės kompiuterių sąrašą
-5.	Peržiūrėti pasirinkto kompiuterio informaciją ir rezervacijų sąrašą
+1.	Peržiūrėti platformos reprezentacinį puslapį
+2.	Prisijungti prie internetinės aplikacijos
+3.	Registruotis prie internetinės aplikacijos
+4.	Peržiūrėti visų interneto kavinių sąrašą
+5.	Peržiūrėti pasirinktos interneto kavinės kompiuterių sąrašą
+6.	Peržiūrėti pasirinkto kompiuterio rezervacijų sąrašą
 
 #### Registruotas sistemos naudotojas galės:
 1.	Atsijungti nuo internetinės aplikacijos
