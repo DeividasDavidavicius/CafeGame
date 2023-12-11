@@ -1,4 +1,8 @@
 # CafeGame
+
+Ataskaita: [Galutine_Ataskaita_Deividas_Davidavičius.docx](https://github.com/DeividasDavidavicius/CafeGame/files/13636626/Galutine_Ataskaita_Deividas_Davidavicius.docx)
+
+
 ## 1.	Sprendžiamo uždavinio aprašymas
 ### 1.1.	Sistemos paskirtis
 Projekto tikslas – sukurti sistemą, kurioje žmonės galėtų užsirezervuoti kompiuterius tam tikram laikotarpiui skirtingose interneto kavinėse.
