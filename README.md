@@ -48,14 +48,13 @@ Managing internet cafes, computers, and reservations (create, delete, update, an
 ## 2.	System Architecture
 The system consists of the following components:
 
-•	Client-side (Front-End) – Developed using React
-•	Server-side (Back-End) – Developed using .NET 6
-•	Database – PostgreSQL
+-	Client-side (Front-End) – Developed using React
+-	Server-side (Back-End) – Developed using .NET 6
+-	Database – PostgreSQL
 
 The API and database are hosted on a DigitalOcean server, while the web application is hosted on a Vercel server. The web application is accessible via the HTTP protocol. The operation of this system (e.g., data manipulation with the database) requires the CafeGame API, which is accessible through the application programming interface. The CafeGame API handles data exchange with the database, utilizing EF Core (Entity Framework Core) ORM.
 
 ![image](https://github.com/DeividasDavidavicius/CafeGame/assets/101116531/19fe1ffa-ca1f-44ae-b2a9-490d91cbe3a2)
-
 <p align="center">
 Figure 1. CafeGame System Deployment Diagram
 </p>
@@ -65,19 +64,13 @@ Figure 1. CafeGame System Deployment Diagram
 This section presents wireframes and implementations of several system windows.
 
 ![image](https://github.com/DeividasDavidavicius/CafeGame/assets/101116531/6c5e646c-ba3e-4f08-8ebf-e9648af42a8d)
-<p align="center">
-pav. 2. Login page wireframe
-</p>
+<p align="center"> pav. 2. Login page wireframe </p>
 
 ![image](https://github.com/DeividasDavidavicius/CafeGame/assets/101116531/8c7435c4-8994-4dd5-98b1-12ce9d1678c5)
-<p align="center">
-pav. 3. Login page implementation
-</p>
+<p align="center"> pav. 3. Login page implementation </p>
 
 ![image](https://github.com/DeividasDavidavicius/CafeGame/assets/101116531/10b4b883-98fe-432b-a709-6d4be8553a6a)
-<p align="center">
-pav. 4. Registration page wireframe
-</p>
+<p align="center"> pav. 4. Registration page wireframe </p>
 
 ![image](https://github.com/DeividasDavidavicius/CafeGame/assets/101116531/8cb54eae-c2ec-4cd4-a027-65a480b5aab5)
 <p align="center">
