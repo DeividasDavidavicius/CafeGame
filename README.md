@@ -1,8 +1,5 @@
 # CafeGame
 
-Ataskaita: [Galutine_Ataskaita_Deividas_Davidavičius.docx](https://github.com/DeividasDavidavicius/CafeGame/files/13636626/Galutine_Ataskaita_Deividas_Davidavicius.docx)
-
-
 ## 1.	Problem Description
 ### 1.1.	System Purpose
 The project's goal is to develop a system where people can book computers for specific time periods in different internet cafes.
