@@ -147,8 +147,5 @@ pav. 18.  User's reservation list wireframe
 pav. 19.  User's reservation list implementation
 </p>
 
-[L0_Ataskaita_Deividas_Davidavičius.docx](https://github.com/DeividasDavidavicius/CafeGame/files/13635411/L0_Ataskaita_Deividas_Davidavicius.docx)
-
-
 
 
